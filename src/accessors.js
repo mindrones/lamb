@@ -1,3 +1,5 @@
+import {_setIn} from "./privates/object";
+
 /**
  * A curried version of {@link module:lamb.getIndex|getIndex} that uses the provided index
  * to build a function expecting the array-like object holding the element we want to retrieve.
@@ -41,7 +43,7 @@ var getAt = _curry2(getIndex, true);
  * @param {String} key
  * @returns {*}
  */
-function getIn (obj, key) {
+export function getIn (obj, key) {
     return obj[key];
 }
 
@@ -63,9 +65,9 @@ function getIn (obj, key) {
  * @category Array
  * @see {@link module:lamb.getAt|getAt}
  * @see {@link module:lamb.head|head} and {@link module:lamb.last|last} for common use cases shortcuts.
+ * @since 0.23.0
  * @param {ArrayLike} arrayLike
  * @param {Number} index
- * @since 0.23.0
  * @returns {*}
  */
 function getIndex (arrayLike, index) {

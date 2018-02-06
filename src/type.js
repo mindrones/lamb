@@ -1,3 +1,5 @@
+import {_objectProto} from "./_intro";
+
 /**
  * Accepts a constructor and builds a predicate expecting an object,
  * which will be tested to verify whether the prototype of the constructor
@@ -27,7 +29,7 @@
  * @param {*} constructor
  * @returns {Function}
  */
-function isInstanceOf (constructor) {
+export function isInstanceOf (constructor) {
     return function (obj) {
         return obj instanceof constructor;
     };
@@ -50,7 +52,7 @@ function isInstanceOf (constructor) {
  * @param {*} value
  * @returns {Boolean}
  */
-function isNil (value) {
+export function isNil (value) {
     return isNull(value) || isUndefined(value);
 }
 
@@ -68,7 +70,7 @@ function isNil (value) {
  * @param {*} value
  * @returns {Boolean}
  */
-function isNull (value) {
+export function isNull (value) {
     return value === null;
 }
 
@@ -87,7 +89,7 @@ function isNull (value) {
  * @param {String} typeName
  * @returns {Function}
  */
-function isType (typeName) {
+export function isType (typeName) {
     return function (value) {
         return type(value) === typeName;
     };
@@ -107,7 +109,7 @@ function isType (typeName) {
  * @param {*} value
  * @returns {Boolean}
  */
-function isUndefined (value) {
+export function isUndefined (value) {
     return value === void 0;
 }
 
@@ -132,7 +134,7 @@ function isUndefined (value) {
  * @param {*} value
  * @returns {String}
  */
-function type (value) {
+export function type (value) {
     return _objectProto.toString.call(value).slice(8, -1);
 }
 

@@ -1,3 +1,5 @@
+import {_toArrayLength} from "./privates/array"
+
 /**
  * Builds a predicate to check if an array-like object contains the given value.<br/>
  * Please note that the equality test is made with {@link module:lamb.areSVZ|areSVZ}; so you can
@@ -335,7 +337,7 @@ var list = _argsToArrayFrom(0);
  * @param {ListIteratorCallback} iteratee
  * @returns {Array}
  */
-function map (arrayLike, iteratee) {
+export function map (arrayLike, iteratee) {
     var len = _toArrayLength(arrayLike.length);
     var result = Array(len);
 
@@ -384,7 +386,7 @@ var mapWith = _curry2(map, true);
  * @param {*} [initialValue]
  * @returns {*}
  */
-var reduce = _makeReducer(1);
+export const reduce = _makeReducer(1);
 
 /**
  * Same as {@link module:lamb.reduce|reduce}, but starts the fold operation from the last
@@ -500,7 +502,7 @@ function reverse (arrayLike) {
  * @param {Number} end - Index at which to end extraction. Extracts up to but not including end.
  * @returns {Array}
  */
-function slice (arrayLike, start, end) {
+export function slice (arrayLike, start, end) {
     var len = _toArrayLength(arrayLike.length);
     var begin = _toInteger(start);
     var upTo = _toInteger(end);

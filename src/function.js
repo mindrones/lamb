@@ -147,7 +147,7 @@ function asPartial (fn) {
  * @param {Function} fn
  * @returns {Function}
  */
-function binary (fn) {
+export function binary (fn) {
     return function (a, b) {
         return fn.call(this, a, b);
     };

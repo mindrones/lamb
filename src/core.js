@@ -1,3 +1,4 @@
+import {_isPlaceholder} from "./_intro";
 
 /**
  * Builds a function that returns a constant value.
@@ -54,7 +55,7 @@ function always (value) {
  * @param {...Function} fn
  * @returns {Function}
  */
-function compose () {
+export function compose () {
     var functions = arguments;
     var len = functions.length;
 
@@ -89,7 +90,7 @@ function compose () {
  * @param {Function} method
  * @returns {Function}
  */
-var generic = Function.bind.bind(Function.call);
+export const generic = Function.bind.bind(Function.call);
 
 /**
  * The I combinator. Any value passed to the function is simply returned as it is.
@@ -105,7 +106,7 @@ var generic = Function.bind.bind(Function.call);
  * @param {*} value
  * @returns {*} The value passed as parameter.
  */
-function identity (value) {
+export function identity (value) {
     return value;
 }
 
@@ -140,7 +141,7 @@ function identity (value) {
  * @param {Array} args
  * @returns {Function}
  */
-function partial (fn, args) {
+export function partial (fn, args) {
     return function () {
         if (!Array.isArray(args)) {
             return fn.apply(this, arguments);
