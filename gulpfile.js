@@ -1,54 +1,119 @@
 var fs = require("fs");
+var path = require("path");
 var gulp = require("gulp");
-var pkg = require("./package.json");
-var concat = require("gulp-concat");
 var eslint = require("gulp-eslint");
-var footer = require("gulp-footer");
-var header = require("gulp-header");
-var indent = require("gulp-indent");
 var istanbul = require("gulp-istanbul");
 var jasmine = require("gulp-jasmine");
 var rename = require("gulp-rename");
+var rollup = require('rollup');
+var rollupAlias = require('rollup-plugin-alias');
+var rollupJSON = require('rollup-plugin-json');
 var sourcemaps = require("gulp-sourcemaps");
 var uglify = require("gulp-uglify");
 
-var scripts = [
-    "./src/core.js",
-    "./src/privates.js",
-    "./src/array_basics.js",
-    "./src/logic.js",
-    "./src/math.js",
-    "./src/type.js",
-    "./src/accessors.js",
-    "./src/array.js",
-    "./src/grouping.js",
-    "./src/sort.js",
-    "./src/function.js",
-    "./src/object.js",
-    "./src/object_checking.js",
-    "./src/string.js"
-];
+/* lint */
 
-function lint () {
-    return gulp.src(["./dist/lamb.js", "./test/**"])
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
-}
+var lint = function (paths) {
+    return function () {
+        return gulp.src(paths)
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(eslint.failAfterError());
+    };
+};
 
-gulp.task("concat", function () {
-    var intro = fs.readFileSync("./src/_intro.js", "utf8");
-    var outro = fs.readFileSync("./src/_outro.js", "utf8");
+var lintAll = lint(["./src/**", "./dist/lamb.js", "./test/**"]);
 
-    return gulp.src(scripts)
-        .pipe(concat("lamb.js"), {newLine: "\n"})
-        .pipe(indent({tabs: false, amount: 4}))
-        .pipe(header(intro, {pkg: pkg}))
-        .pipe(footer(outro, {pkg: pkg}))
+gulp.task("lint_src", lint(["./src/**"]));
+gulp.task("lint_dist", lint(["./dist/lamb.js"]));
+gulp.task("lint_test", lint(["./test/**"]));
+
+gulp.task("lint", ["build"], lintAll);
+
+/* build */
+
+var makeAliases = function (aliases) {
+    var rootDir = path.resolve(__dirname);
+    var pathsMap = {};
+
+    for (var alias in aliases) {
+        pathsMap[alias] = path.join(rootDir, aliases[alias]);
+    }
+
+    return pathsMap;
+};
+
+gulp.task("build", function () {
+    var aliases = makeAliases({
+        "@accessors": "src/accessors",
+        "@array": "src/array",
+        "@array_basics": "src/array_basics",
+        "@core": "src/core",
+        "@function": "src/function",
+        "@grouping": "src/grouping",
+        "@logic": "src/logic",
+        "@math": "src/math",
+        "@object": "src/object",
+        "@object_checking": "src/object_checking",
+        "@privates": "src/privates",
+        "@sort": "src/sort",
+        "@src": "src",
+        "@string": "src/string",
+        "@type": "src/type"
+    });
+    var footer = fs.readFileSync("./src/footer.js", "utf8");
+    var header = require('./src/header');
+
+    return rollup.rollup({
+        input: "index.js",
+        plugins: [
+            rollupAlias(aliases),
+            rollupJSON({indent: "    "}) // 4 spaces indentation
+        ]
+    }).then(function (bundle) {
+        return bundle.write({
+            banner: header,
+            file: "dist/lamb.js",
+            footer: footer,
+            format: "umd",
+            name: "lamb",
+            strict: false,
+            sourcemap: true
+        });
+    });
+});
+
+/* minify */
+
+gulp.task("minify", ["build"], function () {
+    return gulp.src("./dist/lamb.js")
+        .pipe(sourcemaps.init())
+        .pipe(uglify({ output: {comments: "some"} }))
+        .pipe(rename({extname: ".min.js"}))
+        .pipe(sourcemaps.write("./"))
         .pipe(gulp.dest("./dist/"));
 });
 
-gulp.task("coverage", ["concat"], function (cb) {
+/* test */
+
+gulp.task("test", ["build"], function () {
+    return gulp.src("./test/spec/*.js")
+        .pipe(jasmine({ includeStackTrace: true }));
+});
+
+gulp.task("test-verbose", ["build"], function () {
+    return gulp.src("./test/spec/*.js")
+        .pipe(jasmine({
+            verbose: true,
+            includeStackTrace: true
+        }));
+});
+
+/* quality */
+
+// coverage
+
+gulp.task("coverage", ["build"], function (cb) {
     gulp.src("./dist/lamb.js")
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
@@ -60,34 +125,10 @@ gulp.task("coverage", ["concat"], function (cb) {
         });
 });
 
-gulp.task("lint", ["concat"], lint);
+// travis
 
-gulp.task("minify", ["concat"], function () {
-    return gulp.src("./dist/lamb.js")
-        .pipe(sourcemaps.init())
-        .pipe(uglify({
-            output: {comments: "some"}
-        }))
-        .pipe(rename({extname: ".min.js"}))
-        .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("./dist/"));
-});
+gulp.task("travis", ["build", "minify", "test"], lintAll);
 
-gulp.task("test", ["concat"], function () {
-    return gulp.src("./test/spec/*.js")
-        .pipe(jasmine({
-            includeStackTrace: true
-        }));
-});
+/* default */
 
-gulp.task("travis", ["concat", "minify", "test"], lint);
-
-gulp.task("test-verbose", ["concat"], function () {
-    return gulp.src("./test/spec/*.js")
-        .pipe(jasmine({
-            verbose: true,
-            includeStackTrace: true
-        }));
-});
-
-gulp.task("default", ["concat", "minify", "coverage"], lint);
+gulp.task("default", ["build", "minify", "coverage"], lintAll);

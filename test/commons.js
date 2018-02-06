@@ -2,6 +2,7 @@
 // we don't want strict mode to leak inside jasmine
 
 var lamb = require("../dist/lamb.js");
+
 var equalities = require("./custom_equalities.js");
 
 var concat = lamb.generic(Array.prototype.concat);

@@ -63,10 +63,6 @@
                 "properties": "always"
              }
         ],
-        "indent": [
-            "error",
-            4
-        ],
         "key-spacing": [
             "error", {
                 "afterColon": true,
@@ -118,12 +114,6 @@
             "error",
             5
         ],
-        "max-statements": [
-            "error",
-            15, {
-                "ignoreTopLevelFunctions": true
-            }
-        ],
         "max-statements-per-line": [
             "error", {
                 "max": 1
@@ -145,12 +135,6 @@
         "no-extend-native": "error",
         "no-extra-bind": "error",
         "no-extra-label": "error",
-        "no-extra-parens": [
-            "error",
-            "all", {
-                "nestedBinaryExpressions": false
-            }
-        ],
         "no-implicit-globals": "error",
         "no-implied-eval": "error",
         "no-iterator": "error",
@@ -186,12 +170,6 @@
         "no-undefined": "error",
         "no-unmodified-loop-condition": "error",
         "no-unneeded-ternary": "error",
-        "no-unused-expressions": [
-            "error", {
-                "allowShortCircuit": true,
-                "allowTernary": false
-            }
-        ],
         "no-useless-call": "error",
         "no-useless-concat": "error",
         "no-useless-escape": "error",
@@ -218,10 +196,6 @@
             "error",
             "after"
         ],
-        "padded-blocks": [
-            "error",
-            "never"
-        ],
         "padding-line-between-statements": [
             "error",
             {"blankLine": "always", "prev": "block-like", "next": "*"},
@@ -235,10 +209,6 @@
         "quote-props": [
             "error",
             "consistent-as-needed"
-        ],
-        "quotes": [
-            "error",
-            "double"
         ],
         "radix": "error",
         "require-jsdoc": [
@@ -279,18 +249,6 @@
                 "words": true
             }
         ],
-        "spaced-comment": [
-            "error",
-            "always", {
-                "block": {
-                    "balanced": true
-                }
-            }
-        ],
-        "strict": [
-            "error",
-            "function"
-        ],
         "valid-jsdoc": [
             "error", {
                 "prefer": {
@@ -314,10 +272,6 @@
                 "requireReturnDescription": false,
                 "requireReturnType": true
             }
-        ],
-        "wrap-iife": [
-            "error",
-            "inside"
         ],
         "yoda": "error"
     }
