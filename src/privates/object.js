@@ -1,7 +1,8 @@
 import getIn from "../accessors/getIn";
 import {forEach, map, reduce} from "../array_basics";
 import slice from "../array_basics/slice";
-import {compose, generic} from "../core";
+import compose from "../core/compose";
+import generic from "../core/generic";
 import partial from "../core/partial";
 import {_objectProto} from "../_intro";
 import isNil from "../type/isNil";
