@@ -1,4 +1,4 @@
-import {partial} from "../core";
+import partial from "../core/partial";
 import {binary} from "../function";
 import {_, _placeholder} from "../_intro";
 

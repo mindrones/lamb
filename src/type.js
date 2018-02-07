@@ -36,45 +36,6 @@ export function isInstanceOf (constructor) {
 }
 
 /**
- * Verifies if a value is <code>null</code> or <code>undefined</code>.
- * @example
- * _.isNil(NaN) // => false
- * _.isNil({}) // => false
- * _.isNil(null) // => true
- * _.isNil(void 0) // => true
- * _.isNil() // => true
- *
- * @memberof module:lamb
- * @category Type
- * @see {@link module:lamb.isNull|isNull}
- * @see {@link module:lamb.isUndefined|isUndefined}
- * @since 0.1.0
- * @param {*} value
- * @returns {Boolean}
- */
-export function isNil (value) {
-    return isNull(value) || isUndefined(value);
-}
-
-/**
- * Verifies if a value is <code>null</code>.
- * @example
- * _.isNull(null) // => true
- * _.isNull(void 0) // => false
- * _.isNull(false) // => false
- *
- * @memberof module:lamb
- * @category Type
- * @see {@link module:lamb.isNil|isNil} if you want to check for <code>undefined</code> too.
- * @since 0.1.0
- * @param {*} value
- * @returns {Boolean}
- */
-export function isNull (value) {
-    return value === null;
-}
-
-/**
  * Builds a predicate that expects a value to check against the specified type.
  * @example
  * var isString = _.isType("String");
@@ -93,24 +54,6 @@ export function isType (typeName) {
     return function (value) {
         return type(value) === typeName;
     };
-}
-
-/**
- * Verifies if a value is <code>undefined</code>.
- * @example
- * _.isUndefined(null) // => false
- * _.isUndefined(void 0) // => true
- * _.isUndefined(false) // => false
- *
- * @memberof module:lamb
- * @category Type
- * @see {@link module:lamb.isNil|isNil} if you want to check for <code>null</code> too.
- * @since 0.1.0
- * @param {*} value
- * @returns {Boolean}
- */
-export function isUndefined (value) {
-    return value === void 0;
 }
 
 /**

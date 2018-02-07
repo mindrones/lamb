@@ -45,9 +45,8 @@ function _repeat (source, times) {
  */
 export const _search = generic(_stringProto.search);
 
-// TODO sting -> string
 /**
- * Splits a sting path using the provided separator and returns an array
+ * Splits a string path using the provided separator and returns an array
  * of path parts.
  * @private
  * @param {String} path

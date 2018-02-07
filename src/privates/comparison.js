@@ -1,4 +1,4 @@
-import {areSVZ} from "../logic/equality";
+import areSVZ from "../logic/areSVZ";
 
 /**
  * The default comparer for sorting functions.<br/>

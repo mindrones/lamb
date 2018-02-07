@@ -1,4 +1,4 @@
-import {slice} from "../array_basics";
+import slice from "../array_basics/slice";
 import {_curry2} from "./currying";
 import {MAX_ARRAY_LENGTH} from "../_intro";
 import {clamp} from "../math";

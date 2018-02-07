@@ -24,6 +24,6 @@
  * @param {*} b
  * @returns {Boolean}
  */
-export function areSVZ (a, b) {
+export default function areSVZ (a, b) {
     return a !== a ? b !== b : a === b; // eslint-disable-line no-self-compare
 }

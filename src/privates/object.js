@@ -1,9 +1,12 @@
-import {getIn} from "../accessors";
-import {forEach, map, reduce, slice} from "../array_basics";
+import getIn from "../accessors/getIn";
+import {forEach, map, reduce} from "../array_basics";
+import slice from "../array_basics/slice";
 import {compose, generic} from "../core";
+import partial from "../core/partial";
 import {_objectProto} from "../_intro";
-import {partial} from "../partial";
-import {isNil, isNull, isUndefined} from "../type";
+import isNil from "../type/isNil";
+import isNull from "../type/isNull";
+import isUndefined from "../type/isUndefined";
 import {_argsTail} from "./args";
 import {_isArrayIndex, _setIndex} from "./array";
 import {_curry2} from "./currying";

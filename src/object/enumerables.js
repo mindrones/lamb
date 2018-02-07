@@ -1,0 +1,23 @@
+import {_safeEnumerables, _unsafeKeyListFrom} from "../privates/object";
+
+/**
+ * Creates an array with all the enumerable properties of the given object.
+ * @example <caption>Showing the difference with {@link module:lamb.keys|keys}:</caption>
+ * var baseFoo = Object.create({a: 1}, {b: {value: 2}});
+ * var foo = Object.create(baseFoo, {
+ *     c: {value: 3},
+ *     d: {value: 4, enumerable: true}
+ * });
+ *
+ * _.keys(foo) // => ["d"]
+ * _.enumerables(foo) // => ["d", "a"]
+ *
+ * @memberof module:lamb
+ * @category Object
+ * @function enumerables
+ * @see {@link module:lamb.keys|keys}
+ * @since 0.12.0
+ * @param {Object} obj
+ * @returns {String[]}
+ */
+export default _unsafeKeyListFrom(_safeEnumerables);
