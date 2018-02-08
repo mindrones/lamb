@@ -305,55 +305,6 @@ function isIn (arrayLike, value) {
 }
 
 /**
- * Builds a new array by applying the iteratee function to each element of the
- * received array-like object.<br/>
- * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
- * @example
- * _.map(["Joe", "Mario", "Jane"], _.invoker("toUpperCase")) // => ["JOE", "MARIO", "JANE"]
- *
- * _.map([4, 9, 16], Math.sqrt); // => [2, 3, 4]
- *
- * @memberof module:lamb
- * @category Array
- * @see {@link module:lamb.mapWith|mapWith}
- * @see {@link module:lamb.flatMap|flatMap}, {@link module:lamb.flatMapWith|flatMapWith}
- * @since 0.1.0
- * @param {ArrayLike} arrayLike
- * @param {ListIteratorCallback} iteratee
- * @returns {Array}
- */
-export function map (arrayLike, iteratee) {
-    var len = _toArrayLength(arrayLike.length);
-    var result = Array(len);
-
-    for (var i = 0; i < len; i++) {
-        result[i] = iteratee(arrayLike[i], i, arrayLike);
-    }
-
-    return result;
-}
-
-/**
- * A curried version of {@link module:lamb.map|map} that uses the provided iteratee to
- * build a function expecting the array-like object to act upon.
- * @example
- * var square = function (n) { return n * n; };
- * var getSquares = _.mapWith(square);
- *
- * getSquares([1, 2, 3, 4, 5]) // => [1, 4, 9, 16, 25]
- *
- * @memberof module:lamb
- * @category Array
- * @function
- * @see {@link module:lamb.map|map}
- * @see {@link module:lamb.flatMap|flatMap}, {@link module:lamb.flatMapWith|flatMapWith}
- * @since 0.1.0
- * @param {ListIteratorCallback} iteratee
- * @returns {function}
- */
-var mapWith = _curry2(map, true);
-
-/**
  * Reduces (or folds) the values of an array-like object, starting from the first, to a new
  * value using the provided <code>accumulator</code> function.<br/>
  * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.

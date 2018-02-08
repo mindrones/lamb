@@ -1,5 +1,5 @@
 import partial from "../core/partial";
-import {binary} from "../function";
+import binary from "../function/binary";
 import {_, _placeholder} from "../_intro";
 
 /**
