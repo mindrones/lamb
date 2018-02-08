@@ -1,4 +1,4 @@
-import {map} from "../array_basics";
+import map from "../array_basics/map";
 import identity from "../core/identity";
 import {_comparer} from "./comparison";
 

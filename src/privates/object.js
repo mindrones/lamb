@@ -1,10 +1,12 @@
+import {_objectProto} from "../_intro";
 import getIn from "../accessors/getIn";
-import {forEach, map, reduce} from "../array_basics";
+import forEach from "../array_basics/forEach";
+import map from "../array_basics/map";
+import reduce from "../array_basics/reduce";
 import slice from "../array_basics/slice";
 import compose from "../core/compose";
 import generic from "../core/generic";
 import partial from "../core/partial";
-import {_objectProto} from "../_intro";
 import isNil from "../type/isNil";
 import isNull from "../type/isNull";
 import isUndefined from "../type/isUndefined";
