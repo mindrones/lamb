@@ -1,4 +1,5 @@
-import {isNil, type} from "../type";
+import isNil from "../type/isNil";
+import {type} from "../type";
 import generic from "../core/generic";
 import {_stringProto} from "../_intro";
 
