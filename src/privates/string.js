@@ -26,7 +26,7 @@ export function _getPadding (source, char, len) {
  * @param {Number} times
  * @returns {String}
  */
-function _repeat (source, times) {
+export function _repeat (source, times) {
     var result = "";
 
     for (var i = 0; i < times; i++) {
