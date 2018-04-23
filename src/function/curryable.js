@@ -1,4 +1,4 @@
-import {_curry} from "@privates/currying";
+import _curry from "@privates/currying/_curry";
 
 /**
  * Builds an auto-curried function. The resulting function can be called multiple times with

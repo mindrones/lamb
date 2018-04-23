@@ -1,4 +1,4 @@
-import {_curry} from "@privates/currying";
+import _curry from "@privates/currying/_curry";
 
 /**
  * Same as {@link module:lamb.curryable|curryable}, but currying starts from the rightmost argument.

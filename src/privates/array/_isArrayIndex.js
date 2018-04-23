@@ -1,4 +1,4 @@
-import {_isEnumerable} from "../object";
+import {_isEnumerable} from "@privates/object";
 
 /**
  * Accepts a target object and a key name and verifies that the target is an array and that

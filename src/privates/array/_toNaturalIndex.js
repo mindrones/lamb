@@ -1,4 +1,4 @@
-import {_toInteger} from "../number";
+import {_toInteger} from "@privates/number";
 
 /**
  * Checks if the given number, even negative, represents an array-like index

@@ -13,7 +13,7 @@ import isUndefined from "@type/isUndefined";
 import _argsTail from "./args/_argsTail";
 import _isArrayIndex from "./array/_isArrayIndex";
 import _setIndex from "./array/_setIndex";
-import {_curry2} from "./currying";
+import _curry2 from "./currying/_curry2";
 import {_makeTypeErrorFor} from "./type";
 
 /**

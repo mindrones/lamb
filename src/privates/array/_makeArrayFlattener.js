@@ -1,5 +1,5 @@
 import slice from "@array_basics/slice";
-import {_curry2} from "../currying";
+import _curry2 from "@privates/currying/_curry2";
 import _flatten from "./_flatten";
 
 /**

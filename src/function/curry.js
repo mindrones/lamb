@@ -1,4 +1,4 @@
-import {_curry} from "@privates/currying";
+import _curry from "@privates/currying/_curry";
 
 /**
  * Transforms the evaluation of the given function in the evaluation of a sequence of functions
