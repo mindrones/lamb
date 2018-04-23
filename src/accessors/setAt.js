@@ -1,5 +1,5 @@
 import {_makePartial3} from "@privates/partial";
-import {_setIndex} from "@privates/array";
+import _setIndex from "@privates/array/_setIndex";
 
 /**
  * Builds a function that creates a copy of an array-like object with the given

@@ -1,4 +1,4 @@
-import {_getNumConsecutiveHits} from "@privates/array";
+import _getNumConsecutiveHits from "@privates/array/_getNumConsecutiveHits";
 import slice from "@array_basics/slice";
 
 /**

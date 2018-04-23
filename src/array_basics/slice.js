@@ -1,4 +1,4 @@
-import {_toArrayLength} from "@privates/array";
+import _toArrayLength from "@privates/array/_toArrayLength";
 import {_toInteger} from "@privates/number";
 
 /**

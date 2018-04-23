@@ -11,7 +11,8 @@ import isNil from "@type/isNil";
 import isNull from "@type/isNull";
 import isUndefined from "@type/isUndefined";
 import _argsTail from "./args/_argsTail";
-import {_isArrayIndex, _setIndex} from "./array";
+import _isArrayIndex from "./array/_isArrayIndex";
+import _setIndex from "./array/_setIndex";
 import {_curry2} from "./currying";
 import {_makeTypeErrorFor} from "./type";
 

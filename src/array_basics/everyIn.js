@@ -1,4 +1,4 @@
-import {_makeArrayChecker} from "@privates/array";
+import _makeArrayChecker from "@privates/array/_makeArrayChecker";
 
 /**
  * Checks if all the elements in an array-like object satisfy the given predicate.<br/>

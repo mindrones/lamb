@@ -1,4 +1,4 @@
-import {_makeArrayFlattener} from "@privates/array";
+import _makeArrayFlattener from "@privates/array/_makeArrayFlattener";
 
 /**
  * Flattens the "first level" of an array.

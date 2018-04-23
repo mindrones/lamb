@@ -1,4 +1,4 @@
-import {_setIndex} from "@privates/array";
+import _setIndex from "@privates/array/_setIndex";
 import aritize from "@function/aritize";
 
 /**

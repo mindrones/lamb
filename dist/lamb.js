@@ -108,87 +108,6 @@
     }
 
     /**
-     * Converts a value to a number and returns it if it's not NaN, otherwise
-     * returns zero.
-     * @private
-     * @param {*} value
-     * @returns {Number}
-     */
-    function _forceToNumber (value) {
-        var n = +value;
-
-        return n === n ? n : 0; // eslint-disable-line no-self-compare
-    }
-
-    /**
-     * Converts a value to an integer.
-     * @private
-     * @param {*} value
-     * @returns {Number}
-     */
-    function _toInteger (value) {
-        var n = +value;
-
-        if (n !== n) { // eslint-disable-line no-self-compare
-            return 0;
-        } else if (n % 1 === 0) {
-            return n;
-        } else {
-            return Math.floor(Math.abs(n)) * (n < 0 ? -1 : 1);
-        }
-    }
-
-    /**
-     * Builds an array by extracting a portion of an array-like object.<br/>
-     * Note that unlike the native array method this function ensures that dense
-     * arrays are returned.<br/>
-     * Also, unlike the native method, the <code>start</code> and <code>end</code>
-     * parameters aren't optional and will be simply converted to integer.<br/>
-     * See {@link module:lamb.dropFrom|dropFrom} and {@link module:lamb.drop|drop} if you want a
-     * slice to the end of the array-like.
-     * @example
-     * var arr = [1, 2, 3, 4, 5];
-     *
-     * _.slice(arr, 0, 2) // => [1, 2]
-     * _.slice(arr, 2, -1) // => [3, 4]
-     * _.slice(arr, -3, 5) // => [3, 4, 5]
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @see {@link module:lamb.sliceAt|sliceAt}
-     * @see {@link module:lamb.dropFrom|dropFrom}, {@link module:lamb.drop|drop}
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike - Any array like object.
-     * @param {Number} start - Index at which to begin extraction.
-     * @param {Number} end - Index at which to end extraction. Extracts up to but not including end.
-     * @returns {Array}
-     */
-    function slice (arrayLike, start, end) {
-        var len = _toArrayLength(arrayLike.length);
-        var begin = _toInteger(start);
-        var upTo = _toInteger(end);
-
-        if (begin < 0) {
-            begin = begin < -len ? 0 : begin + len;
-        }
-
-        if (upTo < 0) {
-            upTo = upTo < -len ? 0 : upTo + len;
-        } else if (upTo > len) {
-            upTo = len;
-        }
-
-        var resultLen = upTo - begin;
-        var result = resultLen > 0 ? Array(resultLen) : [];
-
-        for (var i = 0; i < resultLen; i++) {
-            result[i] = arrayLike[begin + i];
-        }
-
-        return result;
-    }
-
-    /**
      * "Clamps" a number within the given limits, both included.<br/>
      * The function will convert to number all its parameters before starting any
      * evaluation, and will return <code>NaN</code> if <code>min</code> is greater
@@ -236,6 +155,118 @@
     var versionObj = {value: version};
 
     /**
+     * Converts a value to a valid array length, thus an integer within
+     * <code>0</code> and <code>2<sup>32</sup> - 1</code> (both included).
+     * @private
+     * @param {*} value
+     * @returns {Number}
+     */
+    function _toArrayLength (value) {
+        return clamp(value, 0, MAX_ARRAY_LENGTH) >>> 0;
+    }
+
+    /**
+     * Converts a value to a number and returns it if it's not NaN, otherwise
+     * returns zero.
+     * @private
+     * @param {*} value
+     * @returns {Number}
+     */
+    function _forceToNumber (value) {
+        var n = +value;
+
+        return n === n ? n : 0; // eslint-disable-line no-self-compare
+    }
+
+    /**
+     * Converts a value to an integer.
+     * @private
+     * @param {*} value
+     * @returns {Number}
+     */
+    function _toInteger (value) {
+        var n = +value;
+
+        if (n !== n) { // eslint-disable-line no-self-compare
+            return 0;
+        } else if (n % 1 === 0) {
+            return n;
+        } else {
+            return Math.floor(Math.abs(n)) * (n < 0 ? -1 : 1);
+        }
+    }
+
+    /**
+     * Checks if the given number, even negative, represents an array-like index
+     * within the provided length. If so returns its natural number equivalent.<br/>
+     * Returns <code>NaN<code> otherwise.
+     * @private
+     * @param {Number} idx
+     * @param {Number} len
+     * @returns {Number}
+     */
+    function _toNaturalIndex (idx, len) {
+        idx = _toInteger(idx);
+
+        return idx >= -len && idx < len ? idx < 0 ? idx + len : idx : NaN;
+    }
+
+    /**
+     * Retrieves the element at the given index in an array-like object.<br/>
+     * Like {@link module:lamb.slice|slice} the index can be negative.<br/>
+     * If the index isn't supplied, or if its value isn't an integer within the array-like bounds,
+     * the function will return <code>undefined</code>.<br/>
+     * <code>getIndex</code> will throw an exception when receives <code>null</code> or
+     * <code>undefined</code> in place of an array-like object, but returns <code>undefined</code>
+     * for any other value.
+     * @example
+     * var arr = [1, 2, 3, 4, 5];
+     *
+     * _.getIndex(arr, 1) // => 2
+     * _.getIndex(arr, -1) // => 5
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @see {@link module:lamb.getAt|getAt}
+     * @see {@link module:lamb.head|head} and {@link module:lamb.last|last} for common use cases shortcuts.
+     * @since 0.23.0
+     * @param {ArrayLike} arrayLike
+     * @param {Number} index
+     * @returns {*}
+     */
+    function getIndex (arrayLike, index) {
+        var idx = _toNaturalIndex(index, _toArrayLength(arrayLike.length));
+
+        return idx === idx ? arrayLike[idx] : void 0; // eslint-disable-line no-self-compare
+    }
+
+    /**
+     * A curried version of {@link module:lamb.getIndex|getIndex} that uses the provided index
+     * to build a function expecting the array-like object holding the element we want to retrieve.
+     * @example
+     * var getFifthElement = _.getAt(4);
+     *
+     * getFifthElement([1, 2, 3, 4, 5]) // => 5
+     * getFifthElement("foo bar") // => "b"
+     * getFifthElement([]) // => undefined
+     * getFifthElement("foo") // => undefined
+     *
+     * @example <caption>Using negative indexes:</caption>
+     * _.getAt(-2)([1, 2, 3]) // => 2
+     * _.getAt(-3)("foo") // => "f"
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @function getAt
+     * @since 0.16.0
+     * @see {@link module:lamb.getIndex|getIndex}
+     * @see {@link module:lamb.head|head} and {@link module:lamb.last|last} for common use cases shortcuts.
+     * @param {Number} index
+     * @returns {Function}
+     */
+    var getAt = _curry2(getIndex, true);
+
+    /**
      * Returns the value of the object property with the given key.
      * @example
      * var user = {name: "John"};
@@ -257,158 +288,27 @@
     }
 
     /**
-     * Executes the provided <code>iteratee</code> for each element of the given array-like object.<br/>
-     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
-     * @example <caption>Adding a CSS class to all elements of a NodeList in a browser environment:</caption>
-     * var addClass = _.curry(function (className, element) {
-     *     element.classList.add(className);
-     * });
-     * var paragraphs = document.querySelectorAll("#some-container p");
-     *
-     * _.forEach(paragraphs, addClass("main"));
-     * // each "p" element in the container will have the "main" class now
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike
-     * @param {ListIteratorCallback} iteratee
-     * @returns {Undefined}
-     */
-    function forEach (arrayLike, iteratee) {
-        for (var i = 0, len = _toArrayLength(arrayLike.length); i < len; i++) {
-            iteratee(arrayLike[i], i, arrayLike);
-        }
-    }
-
-    /**
-     * Builds a new array by applying the iteratee function to each element of the
-     * received array-like object.<br/>
-     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * A curried version of {@link module:lamb.getIn|getIn}.<br/>
+     * Receives a property name and builds a function expecting the object from which we want to retrieve
+     * the property.
      * @example
-     * _.map(["Joe", "Mario", "Jane"], _.invoker("toUpperCase")) // => ["JOE", "MARIO", "JANE"]
+     * var user1 = {name: "john"};
+     * var user2 = {name: "jane"};
+     * var getName = _.getKey("name");
      *
-     * _.map([4, 9, 16], Math.sqrt); // => [2, 3, 4]
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @see {@link module:lamb.mapWith|mapWith}
-     * @see {@link module:lamb.flatMap|flatMap}, {@link module:lamb.flatMapWith|flatMapWith}
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike
-     * @param {ListIteratorCallback} iteratee
-     * @returns {Array}
-     */
-    function map (arrayLike, iteratee) {
-        var len = _toArrayLength(arrayLike.length);
-        var result = Array(len);
-
-        for (var i = 0; i < len; i++) {
-            result[i] = iteratee(arrayLike[i], i, arrayLike);
-        }
-
-        return result;
-    }
-
-    /**
-     * Reduces (or folds) the values of an array-like object, starting from the first, to a new
-     * value using the provided <code>accumulator</code> function.<br/>
-     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
-     * @example
-     * _.reduce([1, 2, 3, 4], _.sum) // => 10
+     * getName(user1) // => "john"
+     * getName(user2) // => "jane"
      *
      * @memberof module:lamb
-     * @category Array
-     * @function reduce
-     * @see {@link module:lamb.reduceRight|reduceRight}
-     * @see {@link module:lamb.reduceWith|reduceWith}, {@link module:lamb.reduceRightWith|reduceRightWith}
+     * @category Object
+     * @function getKey
+     * @see {@link module:lamb.getIn|getIn}
+     * @see {@link module:lamb.getPath|getPath}, {@link module:lamb.getPathIn|getPathIn}
      * @since 0.1.0
-     * @param {ArrayLike} arrayLike
-     * @param {AccumulatorCallback} accumulator
-     * @param {*} [initialValue]
-     * @returns {*}
-     */
-    var reduce = _makeReducer(1);
-
-    /**
-     * The I combinator. Any value passed to the function is simply returned as it is.
-     * @example
-     * var foo = {bar: "baz"};
-     *
-     * _.identity(foo) === foo // true
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @see [SKI combinator calculus]{@link https://en.wikipedia.org/wiki/SKI_combinator_calculus}
-     * @since 0.1.0
-     * @param {*} value
-     * @returns {*} The value passed as parameter.
-     */
-    function identity (value) {
-        return value;
-    }
-
-    /**
-     * Returns a function that is the composition of the functions given as parameters.
-     * Each function consumes the result of the function that follows.
-     * @example
-     * var sayHi = function (name) { return "Hi, " + name; };
-     * var capitalize = function (s) {
-     *     return s[0].toUpperCase() + s.substr(1).toLowerCase();
-     * };
-     * var fixNameAndSayHi = _.compose(sayHi, capitalize);
-     *
-     * sayHi("bOb") // => "Hi, bOb"
-     * fixNameAndSayHi("bOb") // "Hi, Bob"
-     *
-     * var users = [{name: "fred"}, {name: "bOb"}];
-     * var sayHiToUser = _.compose(fixNameAndSayHi, _.getKey("name"));
-     *
-     * _.map(users, sayHiToUser) // ["Hi, Fred", "Hi, Bob"]
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @see {@link module:lamb.pipe|pipe}
-     * @since 0.1.0
-     * @param {...Function} fn
+     * @param {String} key
      * @returns {Function}
      */
-    function compose () {
-        var functions = arguments;
-        var len = functions.length;
-
-        return len ? function () {
-            var idx = len - 1;
-            var result = functions[idx].apply(this, arguments);
-
-            while (idx--) {
-                result = functions[idx].call(this, result);
-            }
-
-            return result;
-        } : identity;
-    }
-
-    /**
-     * Creates generic functions out of methods.
-     * @author A very little change on a great idea by [Irakli Gozalishvili]{@link https://github.com/Gozala/}.
-     * Thanks for this *beautiful* one-liner (never liked your "unbind" naming choice, though).
-     * @example
-     * var join = _.generic(Array.prototype.join);
-     *
-     * join([1, 2, 3, 4, 5], "-") // => "1-2-3-4-5"
-     *
-     * // the function will work with any array-like object
-     * join("hello", "-") // => "h-e-l-l-o"
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @function generic
-     * @since 0.1.0
-     * @param {Function} method
-     * @returns {Function}
-     */
-    var generic = Function.bind.bind(Function.call);
+    var getKey = _curry2(getIn, true);
 
     var lamb = Object.create(null);
 
@@ -517,6 +417,329 @@
     }
 
     /**
+     * Builds a function that passes only two arguments to the given function.<br/>
+     * It's simply a shortcut for a common use case of {@link module:lamb.aritize|aritize},
+     * exposed for convenience.
+     * @example
+     * _.list(1, 2, 3, 4, 5) // => [1, 2, 3, 4, 5]
+     * _.binary(_.list)(1, 2, 3, 4, 5) // => [1, 2]
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @see {@link module:lamb.aritize|aritize}
+     * @see {@link module:lamb.unary|unary}
+     * @since 0.10.0
+     * @param {Function} fn
+     * @returns {Function}
+     */
+    function binary (fn) {
+        return function (a, b) {
+            return fn.call(this, a, b);
+        };
+    }
+
+    /**
+     * Keeps building a partial application of the received function as long
+     * as it's called with placeholders; applies the original function to
+     * the collected parameters otherwise.<br/>
+     * The function checks only the public placeholder to gain a little performance
+     * as no function in Lamb is built with {@link module:lamb.asPartial|asPartial}.
+     * @private
+     * @param {Function} fn
+     * @param {Array} argsHolder
+     * @returns {Function|*}
+     */
+    function _asPartial (fn, argsHolder) {
+        return function () {
+            var argsLen = arguments.length;
+            var lastIdx = 0;
+            var newArgs = [];
+
+            for (var i = 0, len = argsHolder.length, boundArg; i < len; i++) {
+                boundArg = argsHolder[i];
+                newArgs[i] = boundArg === _placeholder && lastIdx < argsLen ? arguments[lastIdx++] : boundArg;
+            }
+
+            while (lastIdx < argsLen) {
+                newArgs[i++] = arguments[lastIdx++];
+            }
+
+            for (i = 0; i < argsLen; i++) {
+                if (arguments[i] === _placeholder) {
+                    return _asPartial(fn, newArgs);
+                }
+            }
+
+            for (i = 0, len = newArgs.length; i < len; i++) {
+                if (newArgs[i] === _placeholder) {
+                    newArgs[i] = void 0;
+                }
+            }
+
+            return fn.apply(this, newArgs);
+        };
+    }
+
+    /**
+     * Builds a partial application of a ternary function so that its first parameter
+     * is expected as the last one.<br/>
+     * The <code>shouldAritize</code> parameter is for the "reduce" functions, where
+     * the absence of the <code>initialValue</code> transforms a "fold" operation into a
+     * "reduce" one.
+     * @private
+     * @param {Function} fn
+     * @param {Boolean} shouldAritize
+     * @returns {Function}
+     */
+    function _makePartial3 (fn, shouldAritize) {
+        return function (a, b) {
+            var f = shouldAritize && arguments.length !== 2 ? binary(fn) : fn;
+
+            return partial(f, [_, a, b]);
+        };
+    }
+
+    /**
+     * Executes the provided <code>iteratee</code> for each element of the given array-like object.<br/>
+     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * @example <caption>Adding a CSS class to all elements of a NodeList in a browser environment:</caption>
+     * var addClass = _.curry(function (className, element) {
+     *     element.classList.add(className);
+     * });
+     * var paragraphs = document.querySelectorAll("#some-container p");
+     *
+     * _.forEach(paragraphs, addClass("main"));
+     * // each "p" element in the container will have the "main" class now
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike
+     * @param {ListIteratorCallback} iteratee
+     * @returns {Undefined}
+     */
+    function forEach (arrayLike, iteratee) {
+        for (var i = 0, len = _toArrayLength(arrayLike.length); i < len; i++) {
+            iteratee(arrayLike[i], i, arrayLike);
+        }
+    }
+
+    /**
+     * Builds a new array by applying the iteratee function to each element of the
+     * received array-like object.<br/>
+     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * @example
+     * _.map(["Joe", "Mario", "Jane"], _.invoker("toUpperCase")) // => ["JOE", "MARIO", "JANE"]
+     *
+     * _.map([4, 9, 16], Math.sqrt); // => [2, 3, 4]
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @see {@link module:lamb.mapWith|mapWith}
+     * @see {@link module:lamb.flatMap|flatMap}, {@link module:lamb.flatMapWith|flatMapWith}
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike
+     * @param {ListIteratorCallback} iteratee
+     * @returns {Array}
+     */
+    function map (arrayLike, iteratee) {
+        var len = _toArrayLength(arrayLike.length);
+        var result = Array(len);
+
+        for (var i = 0; i < len; i++) {
+            result[i] = iteratee(arrayLike[i], i, arrayLike);
+        }
+
+        return result;
+    }
+
+    /**
+     * Builds a reduce function. The <code>step</code> parameter must be <code>1</code>
+     * to build  {@link module:lamb.reduce|reduce} and <code>-1</code> to build
+     * {@link module:lamb.reduceRight|reduceRight}.
+     * @private
+     * @param {Number} step
+     * @returns {Function}
+     */
+    function _makeReducer (step) {
+        return function (arrayLike, accumulator, initialValue) {
+            var len = _toArrayLength(arrayLike.length);
+            var idx = step === 1 ? 0 : len - 1;
+            var nCalls;
+            var result;
+
+            if (arguments.length === 3) {
+                nCalls = len;
+                result = initialValue;
+            } else {
+                if (len === 0) {
+                    throw new TypeError("Reduce of empty array-like with no initial value");
+                }
+
+                result = arrayLike[idx];
+                idx += step;
+                nCalls = len - 1;
+            }
+
+            for (; nCalls--; idx += step) {
+                result = accumulator(result, arrayLike[idx], idx, arrayLike);
+            }
+
+            return result;
+        };
+    }
+
+    /**
+     * Reduces (or folds) the values of an array-like object, starting from the first, to a new
+     * value using the provided <code>accumulator</code> function.<br/>
+     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * @example
+     * _.reduce([1, 2, 3, 4], _.sum) // => 10
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @function reduce
+     * @see {@link module:lamb.reduceRight|reduceRight}
+     * @see {@link module:lamb.reduceWith|reduceWith}, {@link module:lamb.reduceRightWith|reduceRightWith}
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike
+     * @param {AccumulatorCallback} accumulator
+     * @param {*} [initialValue]
+     * @returns {*}
+     */
+    var reduce = _makeReducer(1);
+
+    /**
+     * Builds an array by extracting a portion of an array-like object.<br/>
+     * Note that unlike the native array method this function ensures that dense
+     * arrays are returned.<br/>
+     * Also, unlike the native method, the <code>start</code> and <code>end</code>
+     * parameters aren't optional and will be simply converted to integer.<br/>
+     * See {@link module:lamb.dropFrom|dropFrom} and {@link module:lamb.drop|drop} if you want a
+     * slice to the end of the array-like.
+     * @example
+     * var arr = [1, 2, 3, 4, 5];
+     *
+     * _.slice(arr, 0, 2) // => [1, 2]
+     * _.slice(arr, 2, -1) // => [3, 4]
+     * _.slice(arr, -3, 5) // => [3, 4, 5]
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @see {@link module:lamb.sliceAt|sliceAt}
+     * @see {@link module:lamb.dropFrom|dropFrom}, {@link module:lamb.drop|drop}
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike - Any array like object.
+     * @param {Number} start - Index at which to begin extraction.
+     * @param {Number} end - Index at which to end extraction. Extracts up to but not including end.
+     * @returns {Array}
+     */
+    function slice (arrayLike, start, end) {
+        var len = _toArrayLength(arrayLike.length);
+        var begin = _toInteger(start);
+        var upTo = _toInteger(end);
+
+        if (begin < 0) {
+            begin = begin < -len ? 0 : begin + len;
+        }
+
+        if (upTo < 0) {
+            upTo = upTo < -len ? 0 : upTo + len;
+        } else if (upTo > len) {
+            upTo = len;
+        }
+
+        var resultLen = upTo - begin;
+        var result = resultLen > 0 ? Array(resultLen) : [];
+
+        for (var i = 0; i < resultLen; i++) {
+            result[i] = arrayLike[begin + i];
+        }
+
+        return result;
+    }
+
+    /**
+     * The I combinator. Any value passed to the function is simply returned as it is.
+     * @example
+     * var foo = {bar: "baz"};
+     *
+     * _.identity(foo) === foo // true
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @see [SKI combinator calculus]{@link https://en.wikipedia.org/wiki/SKI_combinator_calculus}
+     * @since 0.1.0
+     * @param {*} value
+     * @returns {*} The value passed as parameter.
+     */
+    function identity (value) {
+        return value;
+    }
+
+    /**
+     * Returns a function that is the composition of the functions given as parameters.
+     * Each function consumes the result of the function that follows.
+     * @example
+     * var sayHi = function (name) { return "Hi, " + name; };
+     * var capitalize = function (s) {
+     *     return s[0].toUpperCase() + s.substr(1).toLowerCase();
+     * };
+     * var fixNameAndSayHi = _.compose(sayHi, capitalize);
+     *
+     * sayHi("bOb") // => "Hi, bOb"
+     * fixNameAndSayHi("bOb") // "Hi, Bob"
+     *
+     * var users = [{name: "fred"}, {name: "bOb"}];
+     * var sayHiToUser = _.compose(fixNameAndSayHi, _.getKey("name"));
+     *
+     * _.map(users, sayHiToUser) // ["Hi, Fred", "Hi, Bob"]
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @see {@link module:lamb.pipe|pipe}
+     * @since 0.1.0
+     * @param {...Function} fn
+     * @returns {Function}
+     */
+    function compose () {
+        var functions = arguments;
+        var len = functions.length;
+
+        return len ? function () {
+            var idx = len - 1;
+            var result = functions[idx].apply(this, arguments);
+
+            while (idx--) {
+                result = functions[idx].call(this, result);
+            }
+
+            return result;
+        } : identity;
+    }
+
+    /**
+     * Creates generic functions out of methods.
+     * @author A very little change on a great idea by [Irakli Gozalishvili]{@link https://github.com/Gozala/}.
+     * Thanks for this *beautiful* one-liner (never liked your "unbind" naming choice, though).
+     * @example
+     * var join = _.generic(Array.prototype.join);
+     *
+     * join([1, 2, 3, 4, 5], "-") // => "1-2-3-4-5"
+     *
+     * // the function will work with any array-like object
+     * join("hello", "-") // => "h-e-l-l-o"
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @function generic
+     * @since 0.1.0
+     * @param {Function} method
+     * @returns {Function}
+     */
+    var generic = Function.bind.bind(Function.call);
+
+    /**
      * Verifies if a value is <code>null</code>.
      * @example
      * _.isNull(null) // => true
@@ -602,11 +825,47 @@
      * To be used with the arguments object, which needs to be passed to the apply
      * method of this function.
      * @private
-     * @function
+     * @function _argsTail
      * @param {...*} value
      * @returns {Array}
      */
     var _argsTail = _argsToArrayFrom(1);
+
+    /**
+     * Accepts a target object and a key name and verifies that the target is an array and that
+     * the key is an existing index.
+     * @private
+     * @param {Object} target
+     * @param {String|Number} key
+     * @returns {Boolean}
+     */
+    function _isArrayIndex (target, key) {
+        var n = +key;
+
+        return Array.isArray(target) && n % 1 === 0 && !(n < 0 && _isEnumerable(target, key));
+    }
+
+    /**
+     * Sets an index in an array-like object.<br/>
+     * If provided with an updater function it will use it to update the current value,
+     * otherwise sets the index to the specified value.
+     * @private
+     * @param {ArrayLike} arrayLike
+     * @param {Number} idx
+     * @param {*} [value]
+     * @param {Function} [updater]
+     * @returns {Array}
+     */
+    function _setIndex (arrayLike, idx, value, updater) {
+        var result = slice(arrayLike, 0, arrayLike.length);
+        var n = _toNaturalIndex(idx, result.length);
+
+        if (n === n) { // eslint-disable-line no-self-compare
+            result[n] = arguments.length === 4 ? updater(arrayLike[n]) : value;
+        }
+
+        return result;
+    }
 
     /**
      * Retrieves the "type tag" from the given value.
@@ -937,399 +1196,6 @@
     var _valuesFrom = _curry2(function (getKeys, obj) {
         return map(getKeys(obj), partial(getIn, [obj]));
     });
-
-    /**
-     * Flattens an array.
-     * @private
-     * @param {Array} array - The source array
-     * @param {Boolean} isDeep - Whether to perform a deep flattening or not
-     * @param {Array} output - An array to collect the result
-     * @param {Number} idx - The next index to be filled in the output
-     * @returns {Array} The output array filled with the results
-     */
-    function _flatten (array, isDeep, output, idx) {
-        for (var i = 0, len = array.length, value, j, vLen; i < len; i++) {
-            value = array[i];
-
-            if (!Array.isArray(value)) {
-                output[idx++] = value;
-            } else if (isDeep) {
-                _flatten(value, true, output, idx);
-                idx = output.length;
-            } else {
-                vLen = value.length;
-                output.length += vLen;
-
-                for (j = 0; j < vLen; j++) {
-                    output[idx++] = value[j];
-                }
-            }
-        }
-
-        return output;
-    }
-
-    /**
-     * Establishes at which index an element should be inserted in a sorted array to respect
-     * the array order. Needs the comparer used to sort the array.
-     * @private
-     * @param {Array} array
-     * @param {*} element
-     * @param {Function} comparer
-     * @param {Number} start
-     * @param {Number} end
-     * @returns {Number}
-     */
-    function _getInsertionIndex (array, element, comparer, start, end) {
-        if (array.length === 0) {
-            return 0;
-        }
-
-        var pivot = (start + end) >> 1;
-        var result = comparer(
-            {value: element, index: pivot},
-            {value: array[pivot], index: pivot}
-        );
-
-        if (end - start <= 1) {
-            return result < 0 ? pivot : pivot + 1;
-        } else if (result < 0) {
-            return _getInsertionIndex(array, element, comparer, start, pivot);
-        } else if (result === 0) {
-            return pivot + 1;
-        } else {
-            return _getInsertionIndex(array, element, comparer, pivot, end);
-        }
-    }
-
-    /**
-     * Gets the number of consecutive elements satisfying a predicate in an array-like object.
-     * @private
-     * @param {ArrayLike} arrayLike
-     * @param {ListIteratorCallback} predicate
-     * @returns {Number}
-     */
-    function _getNumConsecutiveHits (arrayLike, predicate) {
-        var idx = 0;
-        var len = arrayLike.length;
-
-        while (idx < len && predicate(arrayLike[idx], idx, arrayLike)) {
-            idx++;
-        }
-
-        return idx;
-    }
-
-    /**
-     * Builds a "grouping function" for an array-like object.
-     * @private
-     * @param {Function} makeValue
-     * @returns {Function}
-     */
-    function _groupWith (makeValue) {
-        return function (arrayLike, iteratee) {
-            var result = {};
-            var len = arrayLike.length;
-
-            for (var i = 0, element, key; i < len; i++) {
-                element = arrayLike[i];
-                key = iteratee(element, i, arrayLike);
-                result[key] = makeValue(result[key], element);
-            }
-
-            return result;
-        };
-    }
-
-    /**
-     * Accepts a target object and a key name and verifies that the target is an array and that
-     * the key is an existing index.
-     * @private
-     * @param {Object} target
-     * @param {String|Number} key
-     * @returns {Boolean}
-     */
-    function _isArrayIndex (target, key) {
-        var n = +key;
-
-        return Array.isArray(target) && n % 1 === 0 && !(n < 0 && _isEnumerable(target, key));
-    }
-
-    /**
-     * Helper to build the {@link module:lamb.everyIn|everyIn} or the
-     * {@link module:lamb.someIn|someIn} function.
-     * @private
-     * @param {Boolean} defaultResult
-     * @returns {Function}
-     */
-    function _makeArrayChecker (defaultResult) {
-        return function (arrayLike, predicate) {
-            for (var i = 0, len = arrayLike.length; i < len; i++) {
-                if (defaultResult ^ !!predicate(arrayLike[i], i, arrayLike)) {
-                    return !defaultResult;
-                }
-            }
-
-            return defaultResult;
-        };
-    }
-
-    /**
-     * Helper to build the {@link module:lamb.flatten|flatten} and
-     * {@link module:lamb.shallowFlatten|shallowFlatten} functions.
-     * @private
-     * @function
-     * @param {Boolean} isDeep
-     * @returns {Function}
-     */
-    var _makeArrayFlattener = _curry2(function (isDeep, array) {
-        return Array.isArray(array) ? _flatten(array, isDeep, [], 0) : slice(array, 0, array.length);
-    });
-
-    /**
-     * Builds a reduce function. The <code>step</code> parameter must be <code>1</code>
-     * to build  {@link module:lamb.reduce|reduce} and <code>-1</code> to build
-     * {@link module:lamb.reduceRight|reduceRight}.
-     * @private
-     * @param {Number} step
-     * @returns {Function}
-     */
-    function _makeReducer (step) {
-        return function (arrayLike, accumulator, initialValue) {
-            var len = _toArrayLength(arrayLike.length);
-            var idx = step === 1 ? 0 : len - 1;
-            var nCalls;
-            var result;
-
-            if (arguments.length === 3) {
-                nCalls = len;
-                result = initialValue;
-            } else {
-                if (len === 0) {
-                    throw new TypeError("Reduce of empty array-like with no initial value");
-                }
-
-                result = arrayLike[idx];
-                idx += step;
-                nCalls = len - 1;
-            }
-
-            for (; nCalls--; idx += step) {
-                result = accumulator(result, arrayLike[idx], idx, arrayLike);
-            }
-
-            return result;
-        };
-    }
-
-    /**
-     * Sets an index in an array-like object.<br/>
-     * If provided with an updater function it will use it to update the current value,
-     * otherwise sets the index to the specified value.
-     * @private
-     * @param {ArrayLike} arrayLike
-     * @param {Number} idx
-     * @param {*} [value]
-     * @param {Function} [updater]
-     * @returns {Array}
-     */
-    function _setIndex (arrayLike, idx, value, updater) {
-        var result = slice(arrayLike, 0, arrayLike.length);
-        var n = _toNaturalIndex(idx, result.length);
-
-        if (n === n) { // eslint-disable-line no-self-compare
-            result[n] = arguments.length === 4 ? updater(arrayLike[n]) : value;
-        }
-
-        return result;
-    }
-
-    /**
-     * Converts a value to a valid array length, thus an integer within
-     * <code>0</code> and <code>2<sup>32</sup> - 1</code> (both included).
-     * @private
-     * @param {*} value
-     * @returns {Number}
-     */
-    function _toArrayLength (value) {
-        return clamp(value, 0, MAX_ARRAY_LENGTH) >>> 0;
-    }
-
-    /**
-     * Checks if the given number, even negative, represents an array-like index
-     * within the provided length. If so returns its natural number equivalent.<br/>
-     * Returns <code>NaN<code> otherwise.
-     * @private
-     * @param {Number} idx
-     * @param {Number} len
-     * @returns {Number}
-     */
-    function _toNaturalIndex (idx, len) {
-        idx = _toInteger(idx);
-
-        return idx >= -len && idx < len ? idx < 0 ? idx + len : idx : NaN;
-    }
-
-    /**
-     * Retrieves the element at the given index in an array-like object.<br/>
-     * Like {@link module:lamb.slice|slice} the index can be negative.<br/>
-     * If the index isn't supplied, or if its value isn't an integer within the array-like bounds,
-     * the function will return <code>undefined</code>.<br/>
-     * <code>getIndex</code> will throw an exception when receives <code>null</code> or
-     * <code>undefined</code> in place of an array-like object, but returns <code>undefined</code>
-     * for any other value.
-     * @example
-     * var arr = [1, 2, 3, 4, 5];
-     *
-     * _.getIndex(arr, 1) // => 2
-     * _.getIndex(arr, -1) // => 5
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @see {@link module:lamb.getAt|getAt}
-     * @see {@link module:lamb.head|head} and {@link module:lamb.last|last} for common use cases shortcuts.
-     * @since 0.23.0
-     * @param {ArrayLike} arrayLike
-     * @param {Number} index
-     * @returns {*}
-     */
-    function getIndex (arrayLike, index) {
-        var idx = _toNaturalIndex(index, _toArrayLength(arrayLike.length));
-
-        return idx === idx ? arrayLike[idx] : void 0; // eslint-disable-line no-self-compare
-    }
-
-    /**
-     * A curried version of {@link module:lamb.getIndex|getIndex} that uses the provided index
-     * to build a function expecting the array-like object holding the element we want to retrieve.
-     * @example
-     * var getFifthElement = _.getAt(4);
-     *
-     * getFifthElement([1, 2, 3, 4, 5]) // => 5
-     * getFifthElement("foo bar") // => "b"
-     * getFifthElement([]) // => undefined
-     * getFifthElement("foo") // => undefined
-     *
-     * @example <caption>Using negative indexes:</caption>
-     * _.getAt(-2)([1, 2, 3]) // => 2
-     * _.getAt(-3)("foo") // => "f"
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @function getAt
-     * @since 0.16.0
-     * @see {@link module:lamb.getIndex|getIndex}
-     * @see {@link module:lamb.head|head} and {@link module:lamb.last|last} for common use cases shortcuts.
-     * @param {Number} index
-     * @returns {Function}
-     */
-    var getAt = _curry2(getIndex, true);
-
-    /**
-     * A curried version of {@link module:lamb.getIn|getIn}.<br/>
-     * Receives a property name and builds a function expecting the object from which we want to retrieve
-     * the property.
-     * @example
-     * var user1 = {name: "john"};
-     * var user2 = {name: "jane"};
-     * var getName = _.getKey("name");
-     *
-     * getName(user1) // => "john"
-     * getName(user2) // => "jane"
-     *
-     * @memberof module:lamb
-     * @category Object
-     * @function getKey
-     * @see {@link module:lamb.getIn|getIn}
-     * @see {@link module:lamb.getPath|getPath}, {@link module:lamb.getPathIn|getPathIn}
-     * @since 0.1.0
-     * @param {String} key
-     * @returns {Function}
-     */
-    var getKey = _curry2(getIn, true);
-
-    /**
-     * Builds a function that passes only two arguments to the given function.<br/>
-     * It's simply a shortcut for a common use case of {@link module:lamb.aritize|aritize},
-     * exposed for convenience.
-     * @example
-     * _.list(1, 2, 3, 4, 5) // => [1, 2, 3, 4, 5]
-     * _.binary(_.list)(1, 2, 3, 4, 5) // => [1, 2]
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @see {@link module:lamb.aritize|aritize}
-     * @see {@link module:lamb.unary|unary}
-     * @since 0.10.0
-     * @param {Function} fn
-     * @returns {Function}
-     */
-    function binary (fn) {
-        return function (a, b) {
-            return fn.call(this, a, b);
-        };
-    }
-
-    /**
-     * Keeps building a partial application of the received function as long
-     * as it's called with placeholders; applies the original function to
-     * the collected parameters otherwise.<br/>
-     * The function checks only the public placeholder to gain a little performance
-     * as no function in Lamb is built with {@link module:lamb.asPartial|asPartial}.
-     * @private
-     * @param {Function} fn
-     * @param {Array} argsHolder
-     * @returns {Function|*}
-     */
-    function _asPartial (fn, argsHolder) {
-        return function () {
-            var argsLen = arguments.length;
-            var lastIdx = 0;
-            var newArgs = [];
-
-            for (var i = 0, len = argsHolder.length, boundArg; i < len; i++) {
-                boundArg = argsHolder[i];
-                newArgs[i] = boundArg === _placeholder && lastIdx < argsLen ? arguments[lastIdx++] : boundArg;
-            }
-
-            while (lastIdx < argsLen) {
-                newArgs[i++] = arguments[lastIdx++];
-            }
-
-            for (i = 0; i < argsLen; i++) {
-                if (arguments[i] === _placeholder) {
-                    return _asPartial(fn, newArgs);
-                }
-            }
-
-            for (i = 0, len = newArgs.length; i < len; i++) {
-                if (newArgs[i] === _placeholder) {
-                    newArgs[i] = void 0;
-                }
-            }
-
-            return fn.apply(this, newArgs);
-        };
-    }
-
-    /**
-     * Builds a partial application of a ternary function so that its first parameter
-     * is expected as the last one.<br/>
-     * The <code>shouldAritize</code> parameter is for the "reduce" functions, where
-     * the absence of the <code>initialValue</code> transforms a "fold" operation into a
-     * "reduce" one.
-     * @private
-     * @param {Function} fn
-     * @param {Boolean} shouldAritize
-     * @returns {Function}
-     */
-    function _makePartial3 (fn, shouldAritize) {
-        return function (a, b) {
-            var f = shouldAritize && arguments.length !== 2 ? binary(fn) : fn;
-
-            return partial(f, [_, a, b]);
-        };
-    }
 
     /**
      * Builds the prefix or suffix to be used when padding a string.
@@ -2342,6 +2208,24 @@
     var drop = _curry2(dropFrom, true);
 
     /**
+     * Gets the number of consecutive elements satisfying a predicate in an array-like object.
+     * @private
+     * @param {ArrayLike} arrayLike
+     * @param {ListIteratorCallback} predicate
+     * @returns {Number}
+     */
+    function _getNumConsecutiveHits (arrayLike, predicate) {
+        var idx = 0;
+        var len = arrayLike.length;
+
+        while (idx < len && predicate(arrayLike[idx], idx, arrayLike)) {
+            idx++;
+        }
+
+        return idx;
+    }
+
+    /**
      * Builds a function that drops the first <code>n</code> elements satisfying a predicate
      * from an array or array-like object.
      * @example
@@ -2420,6 +2304,49 @@
      * @returns {Function}
      */
     var flatMapWith = _curry2(flatMap, true);
+
+    /**
+     * Flattens an array.
+     * @private
+     * @param {Array} array - The source array
+     * @param {Boolean} isDeep - Whether to perform a deep flattening or not
+     * @param {Array} output - An array to collect the result
+     * @param {Number} idx - The next index to be filled in the output
+     * @returns {Array} The output array filled with the results
+     */
+    function _flatten (array, isDeep, output, idx) {
+        for (var i = 0, len = array.length, value, j, vLen; i < len; i++) {
+            value = array[i];
+
+            if (!Array.isArray(value)) {
+                output[idx++] = value;
+            } else if (isDeep) {
+                _flatten(value, true, output, idx);
+                idx = output.length;
+            } else {
+                vLen = value.length;
+                output.length += vLen;
+
+                for (j = 0; j < vLen; j++) {
+                    output[idx++] = value[j];
+                }
+            }
+        }
+
+        return output;
+    }
+
+    /**
+     * Helper to build the {@link module:lamb.flatten|flatten} and
+     * {@link module:lamb.shallowFlatten|shallowFlatten} functions.
+     * @private
+     * @function _makeArrayFlattener
+     * @param {Boolean} isDeep
+     * @returns {Function}
+     */
+    var _makeArrayFlattener = _curry2(function (isDeep, array) {
+        return Array.isArray(array) ? _flatten(array, isDeep, [], 0) : slice(array, 0, array.length);
+    });
 
     /**
      * Flattens an array.
@@ -2534,6 +2461,25 @@
      * @returns {Function}
      */
     var contains = _curry2(isIn, true);
+
+    /**
+     * Helper to build the {@link module:lamb.everyIn|everyIn} or the
+     * {@link module:lamb.someIn|someIn} function.
+     * @private
+     * @param {Boolean} defaultResult
+     * @returns {Function}
+     */
+    function _makeArrayChecker (defaultResult) {
+        return function (arrayLike, predicate) {
+            for (var i = 0, len = arrayLike.length; i < len; i++) {
+                if (defaultResult ^ !!predicate(arrayLike[i], i, arrayLike)) {
+                    return !defaultResult;
+                }
+            }
+
+            return defaultResult;
+        };
+    }
 
     /**
      * Checks if all the elements in an array-like object satisfy the given predicate.<br/>
@@ -3915,6 +3861,27 @@
     function unary (fn) {
         return function (a) {
             return fn.call(this, a);
+        };
+    }
+
+    /**
+     * Builds a "grouping function" for an array-like object.
+     * @private
+     * @param {Function} makeValue
+     * @returns {Function}
+     */
+    function _groupWith (makeValue) {
+        return function (arrayLike, iteratee) {
+            var result = {};
+            var len = arrayLike.length;
+
+            for (var i = 0, element, key; i < len; i++) {
+                element = arrayLike[i];
+                key = iteratee(element, i, arrayLike);
+                result[key] = makeValue(result[key], element);
+            }
+
+            return result;
         };
     }
 
@@ -6420,6 +6387,39 @@
         return function (arrayLike) {
             return sort.apply(null, [arrayLike].concat(sorters));
         };
+    }
+
+    /**
+     * Establishes at which index an element should be inserted in a sorted array to respect
+     * the array order. Needs the comparer used to sort the array.
+     * @private
+     * @param {Array} array
+     * @param {*} element
+     * @param {Function} comparer
+     * @param {Number} start
+     * @param {Number} end
+     * @returns {Number}
+     */
+    function _getInsertionIndex (array, element, comparer, start, end) {
+        if (array.length === 0) {
+            return 0;
+        }
+
+        var pivot = (start + end) >> 1;
+        var result = comparer(
+            {value: element, index: pivot},
+            {value: array[pivot], index: pivot}
+        );
+
+        if (end - start <= 1) {
+            return result < 0 ? pivot : pivot + 1;
+        } else if (result < 0) {
+            return _getInsertionIndex(array, element, comparer, start, pivot);
+        } else if (result === 0) {
+            return pivot + 1;
+        } else {
+            return _getInsertionIndex(array, element, comparer, pivot, end);
+        }
     }
 
     /**

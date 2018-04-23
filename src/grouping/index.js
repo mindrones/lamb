@@ -1,4 +1,4 @@
-import {_groupWith} from "@privates/array";
+import _groupWith from "@privates/array/_groupWith";
 
 /**
  * Similar to {@link module:lamb.group|group}, but the generated lookup table will have

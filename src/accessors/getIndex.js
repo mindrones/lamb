@@ -1,4 +1,5 @@
-import {_toNaturalIndex, _toArrayLength} from "@privates/array";
+import _toArrayLength from "@privates/array/_toArrayLength";
+import _toNaturalIndex from "@privates/array/_toNaturalIndex";
 
 /**
  * Retrieves the element at the given index in an array-like object.<br/>

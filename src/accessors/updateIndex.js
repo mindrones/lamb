@@ -1,5 +1,5 @@
 import partial from "@core/partial";
-import {_setIndex} from "@privates/array";
+import _setIndex from "@privates/array/_setIndex";
 import {_} from "@privates/placeholders";
 
 /**

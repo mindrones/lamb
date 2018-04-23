@@ -1,4 +1,4 @@
-import {_groupWith} from "@privates/array";
+import _groupWith from "@privates/array/_groupWith";
 
 /**
  * Transforms an array-like object into a lookup table using the provided iteratee as a grouping

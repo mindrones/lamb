@@ -1,4 +1,4 @@
-import {_getInsertionIndex} from "@privates/array";
+import _getInsertionIndex from "@privates/array/_getInsertionIndex";
 import {_compareWith} from "@privates/comparison";
 import {_makeCriteria} from "@privates/sorting";
 import slice from "@array_basics/slice";

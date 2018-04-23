@@ -1,4 +1,4 @@
-import {_toNaturalIndex} from "@privates/array";
+import _toNaturalIndex from "@privates/array/_toNaturalIndex";
 
 /**
  * Builds a function that returns the argument received at the given index.<br/>

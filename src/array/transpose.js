@@ -1,5 +1,5 @@
+import _toArrayLength from "@privates/array/_toArrayLength";
 import {MAX_ARRAY_LENGTH} from "@src/utils";
-import {_toArrayLength} from "@privates/array";
 
 /**
  * Transposes a matrix. Can also be used to reverse a {@link module:lamb.zip|zip} operation.<br/>

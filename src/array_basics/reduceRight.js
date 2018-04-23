@@ -1,4 +1,4 @@
-import {_makeReducer} from "@privates/array";
+import _makeReducer from "@privates/array/_makeReducer";
 
 /**
  * Same as {@link module:lamb.reduce|reduce}, but starts the fold operation from the last
