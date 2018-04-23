@@ -1,4 +1,4 @@
-import {_argsToArrayFrom} from "@privates/args";
+import _argsToArrayFrom from "@privates/args/_argsToArrayFrom";
 
 /**
  * Generates an array with the values passed as arguments.<br/>

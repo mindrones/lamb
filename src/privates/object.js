@@ -10,7 +10,7 @@ import partial from "@core/partial";
 import isNil from "@type/isNil";
 import isNull from "@type/isNull";
 import isUndefined from "@type/isUndefined";
-import {_argsTail} from "./args";
+import _argsTail from "./args/_argsTail";
 import {_isArrayIndex, _setIndex} from "./array";
 import {_curry2} from "./currying";
 import {_makeTypeErrorFor} from "./type";

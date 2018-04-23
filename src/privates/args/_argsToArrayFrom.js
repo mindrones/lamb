@@ -8,7 +8,7 @@
  * @param {Number} idx
  * @returns {Function}
  */
-export function _argsToArrayFrom (idx) {
+export default function _argsToArrayFrom (idx) {
     return function () {
         var argsLen = arguments.length || idx;
         var len = argsLen - idx;
@@ -21,14 +21,3 @@ export function _argsToArrayFrom (idx) {
         return result;
     };
 }
-
-/**
- * Builds an array with the received arguments excluding the first one.<br/>
- * To be used with the arguments object, which needs to be passed to the apply
- * method of this function.
- * @private
- * @function
- * @param {...*} value
- * @returns {Array}
- */
-export var _argsTail = _argsToArrayFrom(1);

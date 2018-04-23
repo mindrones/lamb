@@ -1,7 +1,7 @@
 import contains from "@array_basics/contains";
 import everyIn from "@array_basics/everyIn";
 import filter from "@array_basics/filter";
-import {_argsTail} from "@privates/args";
+import _argsTail from "@privates/args/_argsTail";
 import uniques from "./uniques";
 
 /**
