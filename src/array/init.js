@@ -1,6 +1,6 @@
-import partial from "../core/partial";
-import slice from "../array_basics/slice";
-import {_} from "../_intro";
+import partial from "@core/partial";
+import slice from "@array_basics/slice";
+import {_} from "@privates/placeholders";
 
 /**
  * Returns a copy of the given array-like object without the last element.

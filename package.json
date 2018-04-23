@@ -8,6 +8,7 @@
     "dist"
   ],
   "homepage": "https://ascartabelli.github.io/lamb/",
+  "jsnext:main": "index",
   "keywords": [
     "functional programming",
     "utility",
@@ -21,6 +22,7 @@
   ],
   "license": "MIT",
   "main": "./dist/lamb.js",
+  "module": "index",
   "name": "lamb",
   "repository": {
     "type": "git",
@@ -38,17 +40,16 @@
   "devDependencies": {
     "coveralls": "^2.13.1",
     "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
     "gulp-eslint": "^4.0.0",
-    "gulp-footer": "^1.0.5",
-    "gulp-header": "^1.8.9",
-    "gulp-indent": "^1.0.1",
     "gulp-istanbul": "^1.1.2",
     "gulp-jasmine": "^2.4.2",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
-    "plato": "^1.7.0"
+    "plato": "^1.7.0",
+    "rollup": "^0.58.1",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-json": "^2.3.0"
   },
   "dependencies": {}
 }

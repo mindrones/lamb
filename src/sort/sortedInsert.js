@@ -1,7 +1,7 @@
-import {_getInsertionIndex} from "../privates/array";
-import {_compareWith} from "../privates/comparison";
-import {_makeCriteria} from "../privates/sorting";
-import slice from "../array_basics/slice";
+import {_getInsertionIndex} from "@privates/array";
+import {_compareWith} from "@privates/comparison";
+import {_makeCriteria} from "@privates/sorting";
+import slice from "@array_basics/slice";
 
 /**
  * Inserts an element in a copy of a sorted array respecting the sort order.

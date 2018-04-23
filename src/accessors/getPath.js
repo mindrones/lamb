@@ -1,4 +1,4 @@
-import {_makePartial3} from "../privates/partial";
+import {_makePartial3} from "@privates/partial";
 import getPathIn from "./getPathIn";
 
 /**

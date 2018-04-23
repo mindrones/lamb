@@ -1,7 +1,7 @@
-import slice from "../array_basics/slice";
+import slice from "@array_basics/slice";
+import clamp from "@math/clamp";
+import {MAX_ARRAY_LENGTH} from "@src/utils";
 import {_curry2} from "./currying";
-import {MAX_ARRAY_LENGTH} from "../_intro";
-import {clamp} from "../math";
 import {_toInteger} from "./number";
 import {_isEnumerable} from "./object";
 

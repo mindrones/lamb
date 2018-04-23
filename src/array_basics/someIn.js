@@ -1,4 +1,4 @@
-import {_makeArrayChecker} from "../privates/array";
+import {_makeArrayChecker} from "@privates/array";
 
 /**
  * Checks if at least one element in an array-like object satisfies the given predicate.<br/>

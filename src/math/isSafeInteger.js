@@ -1,4 +1,4 @@
-import isInteger from "../isInteger";
+import isInteger from "./isInteger";
 
 /**
  * Verifies whether the received value is a "safe integer", meaning that is a number and that

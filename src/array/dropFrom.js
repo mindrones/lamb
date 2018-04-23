@@ -1,4 +1,4 @@
-import slice from "../array_basics/slice";
+import slice from "@array_basics/slice";
 
 /**
  * Builds an array without the first <code>n</code> elements of the given array or array-like object.

@@ -1,5 +1,5 @@
-import isUndefined from "../type/isUndefined";
-import list from "../array_basics/list";
+import isUndefined from "@type/isUndefined";
+import list from "@array_basics/list";
 
 /**
  * Accepts a series of functions and builds a function that applies the received

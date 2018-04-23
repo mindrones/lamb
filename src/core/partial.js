@@ -1,4 +1,4 @@
-import {_isPlaceholder} from "../_intro";
+import {_isPlaceholder} from "@privates/placeholders";
 
 /**
  * Builds a partially applied function. The <code>lamb</code> object itself can be

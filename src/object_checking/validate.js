@@ -1,4 +1,4 @@
-import reduce from "../array_basics/reduce";
+import reduce from "@array_basics/reduce";
 
 /**
  * Validates an object with the given list of {@link module:lamb.checker|checker} functions.

@@ -1,14 +1,7 @@
-/**
- * @overview <%= pkg.name %> - <%= pkg.description %>
- * @author <%= pkg.author.name %> <<%= pkg.author.email %>>
- * @version <%= pkg.version %>
- * @module lamb
- * @license <%= pkg.license %>
- * @preserve
- */
+import {version} from "@src/utils";
 
-export const lamb = Object.create(null);
-export const _ = {}; // internal placeholder for partial application
+const lamb = Object.create(null);
+
 export let _placeholder = lamb; // default value for public placeholder
 
 Object.defineProperties(lamb, {
@@ -44,22 +37,7 @@ Object.defineProperties(lamb, {
      * @since 0.53.0
      * @type String
      */
-    "@@lamb/version": {value: "<%= pkg.version %>"}
+    "@@lamb/version": version
 });
 
-/**
- * Checks whether the given value is the internal or the public placeholder.
- * @private
- * @param {*} value
- * @returns {Boolean}
- */
-export function _isPlaceholder (value) {
-    return value === _ || value === _placeholder;
-}
-
-// prototype shortcuts
-export const _objectProto = Object.prototype;
-export const _stringProto = String.prototype;
-
-// constants
-export const MAX_ARRAY_LENGTH = 4294967295;
+export default lamb;

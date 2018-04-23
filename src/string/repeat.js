@@ -1,6 +1,6 @@
-import isNil from "../type/isNil";
-import {_makeTypeErrorFor} from "../privates/type";
-import {_repeat} from "../privates/string";
+import isNil from "@type/isNil";
+import {_makeTypeErrorFor} from "@privates/type";
+import {_repeat} from "@privates/string";
 
 /**
  * Builds a new string by repeating the source string the desired amount of times.<br/>

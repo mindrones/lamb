@@ -1,7 +1,7 @@
-import {_setPathIn} from "../privates/object";
-import {_toPathParts} from "../privates/string";
-import {_makeTypeErrorFor} from "../privates/type";
-import isNil from "../type/isNil";
+import {_setPathIn} from "@privates/object";
+import {_toPathParts} from "@privates/string";
+import {_makeTypeErrorFor} from "@privates/type";
+import isNil from "@type/isNil";
 
 /**
  * Allows to change a nested value in a copy of the provided object.<br/>

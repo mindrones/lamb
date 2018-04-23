@@ -15,7 +15,7 @@ import type from "./type";
  * @param {String} typeName
  * @returns {Function}
  */
-export function isType (typeName) {
+export default function isType (typeName) {
     return function (value) {
         return type(value) === typeName;
     };

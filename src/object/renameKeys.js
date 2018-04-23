@@ -1,4 +1,4 @@
-import {_curry2} from "../privates/currying";
+import {_curry2} from "@privates/currying";
 import rename from "./rename";
 
 /**

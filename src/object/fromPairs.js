@@ -1,4 +1,4 @@
-import forEach from "../array_basics/forEach";
+import forEach from "@array_basics/forEach";
 
 /**
  * Builds an object from a list of key / value pairs like the one

@@ -1,5 +1,5 @@
-import map from "../array_basics/map";
-import getKey from "../accessors/getKey";
+import map from "@array_basics/map";
+import getKey from "@accessors/getKey";
 
 /**
  * "Plucks" the values of the specified key from a list of objects.

@@ -1,4 +1,4 @@
-import reduce from "../array_basics/reduce";
+import reduce from "@array_basics/reduce";
 
 /**
  * Similar to {@link module:lamb.map|map}, but if the mapping function returns an array this will

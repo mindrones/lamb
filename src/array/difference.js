@@ -1,7 +1,7 @@
-import filter from "../array_basics/filter";
-import isIn from "../array_basics/isIn";
-import partial from "../core/partial";
-import not from "../logic/not";
+import filter from "@array_basics/filter";
+import isIn from "@array_basics/isIn";
+import partial from "@core/partial";
+import not from "@logic/not";
 import uniques from "./uniques";
 
 /**

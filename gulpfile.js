@@ -1,10 +1,9 @@
 var fs = require("fs");
+const path = require("path");
 var gulp = require("gulp");
-var pkg = require("./package.json");
-var concat = require("gulp-concat");
-var footer = require("gulp-footer");
-var header = require("gulp-header");
-var indent = require("gulp-indent");
+const rollup = require('rollup');
+const alias = require('rollup-plugin-alias');
+const json = require('rollup-plugin-json');
 var istanbul = require("gulp-istanbul");
 var jasmine = require("gulp-jasmine");
 var rename = require("gulp-rename");
@@ -32,7 +31,7 @@ function lint () {
     // isolated because of shelljs, again
     var eslint = require("gulp-eslint");
 
-    return gulp.src(["./dist/lamb.js", "./test/**"])
+    return gulp.src(["./dist2/lamb.js", "./test/**"])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
@@ -44,20 +43,62 @@ gulp.task("analysis", function (done) {
     require("plato").inspect(scripts, "./plato_report", {title: "Lamb Analysis"}, function () {});
 });
 
-gulp.task("concat", function () {
-    var intro = fs.readFileSync("./src/_intro.js", "utf8");
-    var outro = fs.readFileSync("./src/_outro.js", "utf8");
+/* build */
 
-    return gulp.src(scripts)
-        .pipe(concat("lamb.js"), {newLine: "\n"})
-        .pipe(indent({tabs: false, amount: 4}))
-        .pipe(header(intro, {pkg: pkg}))
-        .pipe(footer(outro, {pkg: pkg}))
-        .pipe(gulp.dest("./dist/"));
+const makeAliases = aliases => {
+    const rootDir = path.resolve(__dirname);
+    const pathsMap = {};
+
+    for (const alias in aliases) {
+        pathsMap[alias] = path.join(rootDir, aliases[alias]);
+    }
+
+    return pathsMap;
+}
+
+gulp.task("build", () => {
+    const aliases = makeAliases({
+        "@accessors": "src/accessors",
+        "@array": "src/array",
+        "@array_basics": "src/array_basics",
+        "@core": "src/core",
+        "@function": "src/function",
+        "@grouping": "src/grouping",
+        "@logic": "src/logic",
+        "@math": "src/math",
+        "@object": "src/object",
+        "@object_checking": "src/object_checking",
+        "@privates": "src/privates",
+        "@sort": "src/sort",
+        "@src": "src",
+        "@string": "src/string",
+        "@type": "src/type"
+    });
+    const footer = fs.readFileSync("./src/footer.js", "utf8");
+    const header = require('./src/header');
+
+    return rollup.rollup({
+        input: "index.js",
+        plugins: [
+            alias(aliases),
+            json({
+                indent: '    ' // 4 spaces indentation
+            })
+        ]
+    }).then(bundle => {
+        return bundle.write({
+            banner: header,
+            file: "dist2/lamb.js",
+            footer: footer,
+            format: "umd",
+            name: "lamb",
+            sourcemap: true
+        });
+    });
 });
 
-gulp.task("coverage", ["concat"], function (cb) {
-    gulp.src("./dist/lamb.js")
+gulp.task("coverage", ["build"], function (cb) {
+    gulp.src("./dist2/lamb.js")
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
         .on("finish", function () {
@@ -68,29 +109,29 @@ gulp.task("coverage", ["concat"], function (cb) {
         });
 });
 
-gulp.task("lint", ["concat"], lint);
+gulp.task("lint", ["build"], lint);
 
-gulp.task("minify", ["concat"], function () {
-    return gulp.src("./dist/lamb.js")
+gulp.task("minify", ["build"], function () {
+    return gulp.src("./dist2/lamb.js")
         .pipe(sourcemaps.init())
         .pipe(uglify({
             output: {comments: "some"}
         }))
         .pipe(rename({extname: ".min.js"}))
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("./dist/"));
+        .pipe(gulp.dest("./dist2/"));
 });
 
-gulp.task("test", ["concat"], function () {
+gulp.task("test", ["build"], function () {
     return gulp.src("./test/spec/*.js")
         .pipe(jasmine({
             includeStackTrace: true
         }));
 });
 
-gulp.task("travis", ["concat", "minify", "test"], lint);
+gulp.task("travis", ["build", "minify", "test"], lint);
 
-gulp.task("test-verbose", ["concat"], function () {
+gulp.task("test-verbose", ["build"], function () {
     return gulp.src("./test/spec/*.js")
         .pipe(jasmine({
             verbose: true,
@@ -98,4 +139,4 @@ gulp.task("test-verbose", ["concat"], function () {
         }));
 });
 
-gulp.task("default", ["concat", "minify", "coverage"], lint);
+gulp.task("default", ["build", "minify", "coverage"], lint);

@@ -1,5 +1,5 @@
-import {_makeTypeErrorFor} from "../privates/type";
-import isNil from "../type/isNil";
+import {_makeTypeErrorFor} from "@privates/type";
+import isNil from "@type/isNil";
 import make from "./make";
 
 /**

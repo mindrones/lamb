@@ -1,6 +1,6 @@
-import partial from "../core/partial";
-import {_invoker} from "../privates/object";
-import {_} from "../_intro";
+import partial from "@core/partial";
+import {_invoker} from "@privates/object";
+import {_} from "@privates/placeholders";
 
 /**
  * Accepts an object and builds a function expecting a method name, and optionally arguments,

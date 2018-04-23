@@ -1,7 +1,7 @@
-import {_argsTail} from "../privates/args";
-import {_toArrayLength} from "../privates/array";
-import {_compareWith} from "../privates/comparison";
-import {_makeCriteria} from "../privates/sorting";
+import {_argsTail} from "@privates/args";
+import {_toArrayLength} from "@privates/array";
+import {_compareWith} from "@privates/comparison";
+import {_makeCriteria} from "@privates/sorting";
 
 /**
  * Returns a [stably]{@link https://en.wikipedia.org/wiki/Sorting_algorithm#Stability} sorted

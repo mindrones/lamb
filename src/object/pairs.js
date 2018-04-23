@@ -1,4 +1,4 @@
-import {_pairsFrom} from "../privates/object";
+import {_pairsFrom} from "@privates/object";
 import enumerables from "./enumerables";
 
 /**

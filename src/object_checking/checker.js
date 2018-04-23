@@ -1,7 +1,7 @@
-import getPathIn from "../accessors/getPathIn";
-import map from "../array_basics/map";
-import partial from "../core/partial";
-import {_} from "../_intro";
+import getPathIn from "@accessors/getPathIn";
+import map from "@array_basics/map";
+import partial from "@core/partial";
+import {_} from "@privates/placeholders";
 
 /**
  * Builds a <code>checker</code> function meant to be used with

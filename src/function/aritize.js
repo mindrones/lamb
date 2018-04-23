@@ -1,5 +1,5 @@
-import {_toInteger} from "../privates/number";
-import list from "../array_basics/list";
+import {_toInteger} from "@privates/number";
+import list from "@array_basics/list";
 
 /**
  * Builds a new function that passes only the specified amount of arguments to the original one.<br/>

@@ -1,7 +1,7 @@
-import apply from "../function/apply";
-import list from "../array_basics/list";
-import compose from "../core/compose";
-import mapWith from "../array_basics/mapWith";
+import apply from "@function/apply";
+import list from "@array_basics/list";
+import compose from "@core/compose";
+import mapWith from "@array_basics/mapWith";
 
 /**
  * Builds a function that allows to map over the received arguments before applying them

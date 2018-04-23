@@ -1,6 +1,6 @@
-import {_} from "../_intro";
-import partial from "../core/partial";
-import {_setIndex} from "../privates/array";
+import partial from "@core/partial";
+import {_setIndex} from "@privates/array";
+import {_} from "@privates/placeholders";
 
 /**
  * Creates a copy of an array-like object with the given index changed by applying the

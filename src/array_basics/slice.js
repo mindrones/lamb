@@ -1,5 +1,5 @@
-import {_toArrayLength} from "../privates/array";
-import {_toInteger} from "../privates/number";
+import {_toArrayLength} from "@privates/array";
+import {_toInteger} from "@privates/number";
 
 /**
  * Builds an array by extracting a portion of an array-like object.<br/>

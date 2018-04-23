@@ -1,4 +1,4 @@
-import {_toArrayLength} from "../privates/array";
+import {_toArrayLength} from "@privates/array";
 
 /**
  * Builds a new array by applying the iteratee function to each element of the

@@ -1,6 +1,6 @@
-import getKey from "../accessors/getKey";
-import mapWith from "../array_basics/mapWith";
-import compose from "../core/compose";
+import getKey from "@accessors/getKey";
+import mapWith from "@array_basics/mapWith";
+import compose from "@core/compose";
 
 /**
  * A curried version of {@link module:lamb.pluck|pluck} expecting the key to retrieve to

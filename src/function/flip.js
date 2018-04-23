@@ -1,4 +1,4 @@
-import list from "../array_basics/list";
+import list from "@array_basics/list";
 
 
 /**

@@ -1,32 +1,35 @@
 /**
- * Builds a function that allows to "tap" into the arguments of the original one.
- * This allows to extract simple values from complex ones, transform arguments or simply intercept them.
- * If a "tapper" isn't found the argument is passed as it is.
+ * Returns a function that will invoke the passed function at most once in the given timespan.<br/>
+ * The first call in this case happens as soon as the function is invoked; see also
+ * {@link module:lamb.debounce|debounce} for a different behaviour where the first call is delayed.
  * @example
- * var someObject = {count: 5};
- * var someArrayData = [2, 3, 123, 5, 6, 7, 54, 65, 76, 0];
- * var getDataAmount = _.tapArgs(_.sum, [_.getKey("count"), _.getKey("length")]);
+ * var log = _.throttle(console.log.bind(console), 5000);
  *
- * getDataAmount(someObject, someArrayData); // => 15
+ * log("Hi"); // console logs "Hi"
+ * log("Hi again"); // nothing happens
+ * // after five seconds
+ * log("Hello world"); // console logs "Hello world"
  *
  * @memberof module:lamb
  * @category Function
- * @see {@link module:lamb.mapArgs|mapArgs}
- * @since 0.3.0
+ * @see {@link module:lamb.debounce|debounce}
+ * @since 0.1.0
  * @param {Function} fn
- * @param {Function[]} tappers
+ * @param {Number} timespan - Expressed in milliseconds.
  * @returns {Function}
  */
-export default function tapArgs (fn, tappers) {
-    return function () {
-        var len = arguments.length;
-        var tappersLen = tappers.length;
-        var args = [];
+export default function throttle (fn, timespan) {
+    var result;
+    var lastCall = 0;
 
-        for (var i = 0; i < len; i++) {
-            args.push(i < tappersLen ? tappers[i](arguments[i]) : arguments[i]);
+    return function () {
+        var now = Date.now();
+
+        if (now - lastCall >= timespan) {
+            lastCall = now;
+            result = fn.apply(this, arguments);
         }
 
-        return fn.apply(this, args);
+        return result;
     };
 }

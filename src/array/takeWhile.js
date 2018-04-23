@@ -1,5 +1,5 @@
-import slice from "../array_basics/slice";
-import {_getNumConsecutiveHits} from "../privates/array";
+import slice from "@array_basics/slice";
+import {_getNumConsecutiveHits} from "@privates/array";
 
 /**
  * Builds a function that takes the first <code>n</code> elements satisfying a predicate from

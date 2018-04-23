@@ -1,4 +1,4 @@
-import {_search} from "../privates/string";
+import {_search} from "@privates/string";
 
 /**
  * Builds a predicate expecting a string to test against the given regular expression pattern.

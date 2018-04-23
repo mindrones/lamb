@@ -1,4 +1,4 @@
-import {type} from "../type";
+import type from "@type/type";
 
 /**
  * Verifies whether the received value is a finite number.<br/>

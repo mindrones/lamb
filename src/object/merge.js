@@ -1,6 +1,6 @@
-import {_merge} from "../privates/object";
-import partial from "../core/partial";
-import enumerables from "../object/enumerables";
+import {_merge} from "@privates/object";
+import partial from "@core/partial";
+import enumerables from "@object/enumerables";
 
 /**
  * Merges the enumerable properties of the provided sources into a new object.<br/>

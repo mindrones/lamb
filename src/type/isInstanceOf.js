@@ -27,7 +27,7 @@
  * @param {*} constructor
  * @returns {Function}
  */
-export function isInstanceOf (constructor) {
+export default function isInstanceOf (constructor) {
     return function (obj) {
         return obj instanceof constructor;
     };

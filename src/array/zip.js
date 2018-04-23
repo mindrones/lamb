@@ -1,5 +1,5 @@
-import list from "../array_basics/list";
-import compose from "../core/compose";
+import list from "@array_basics/list";
+import compose from "@core/compose";
 import transpose from "./transpose";
 
 /**

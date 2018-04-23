@@ -1,7 +1,7 @@
-import {_toPathParts} from "../privates/string";
-import {_getPathInfo, _merge, _setPathIn} from "../privates/object";
-import enumerables from "../object/enumerables";
-import slice from "../array_basics/slice";
+import {_toPathParts} from "@privates/string";
+import {_getPathInfo, _merge, _setPathIn} from "@privates/object";
+import enumerables from "@object/enumerables";
+import slice from "@array_basics/slice";
 
 /**
  * Allows to change a nested value in a copy of the given object by applying the provided

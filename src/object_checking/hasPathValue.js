@@ -1,6 +1,6 @@
-import areSVZ from "../logic/areSVZ";
-import {_getPathInfo} from "../privates/object";
-import {_toPathParts} from "../privates/string";
+import areSVZ from "@logic/areSVZ";
+import {_getPathInfo} from "@privates/object";
+import {_toPathParts} from "@privates/string";
 
 /**
  * Builds a predicate to check if the given path exists in an object and holds the desired value.<br/>

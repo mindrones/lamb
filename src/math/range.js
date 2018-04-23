@@ -1,4 +1,4 @@
-import {_forceToNumber} from "../privates/number";
+import {_forceToNumber} from "@privates/number";
 
 /**
  * Generates an arithmetic progression of numbers starting from <code>start</code> up to,

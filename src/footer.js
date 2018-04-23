@@ -1,16 +1,3 @@
-
-    /* istanbul ignore next */
-    if (typeof exports === "object") {
-        module.exports = lamb;
-    } else if (typeof define === "function" && define.amd) {
-        define(function () {
-            return lamb;
-        });
-    } else {
-        host.lamb = lamb;
-    }
-})(this);
-
 /**
  * @callback AccumulatorCallback
  * @global

@@ -1,5 +1,5 @@
-import areSVZ from "../logic/areSVZ";
-import isUndefined from "../type/isUndefined";
+import areSVZ from "@logic/areSVZ";
+import isUndefined from "@type/isUndefined";
 import has from "./has";
 
 /**

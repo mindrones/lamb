@@ -1,4 +1,4 @@
-import slice from "../array_basics/slice";
+import slice from "@array_basics/slice";
 
 /**
  * Retrieves the first <code>n</code> elements from an array or array-like object.<br/>

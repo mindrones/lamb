@@ -1,5 +1,5 @@
-import {_merge} from "../privates/object";
-import partial from "../core/partial";
+import {_merge} from "@privates/object";
+import partial from "@core/partial";
 import keys from "./keys";
 
 /**

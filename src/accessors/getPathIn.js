@@ -1,5 +1,5 @@
-import {_getPathInfo} from "../privates/object";
-import {_toPathParts} from "../privates/string";
+import {_getPathInfo} from "@privates/object";
+import {_toPathParts} from "@privates/string";
 
 /**
  * Gets a nested property value from an object using the given path.<br/>

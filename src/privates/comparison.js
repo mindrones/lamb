@@ -1,4 +1,4 @@
-import areSVZ from "../logic/areSVZ";
+import areSVZ from "@logic/areSVZ";
 
 /**
  * The default comparer for sorting functions.<br/>

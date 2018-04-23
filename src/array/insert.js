@@ -1,4 +1,4 @@
-import slice from "../array_basics/slice";
+import slice from "@array_basics/slice";
 
 /**
  * Inserts the provided element in a copy of an array-like object at the

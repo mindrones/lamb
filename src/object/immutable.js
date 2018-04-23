@@ -1,4 +1,4 @@
-import {_immutable} from "../privates/object";
+import {_immutable} from "@privates/object";
 
 /**
  * Makes an object immutable by recursively calling [Object.freeze]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze}

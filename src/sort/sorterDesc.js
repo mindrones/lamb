@@ -1,6 +1,6 @@
-import partial from "../core/partial";
-import {_} from "../_intro";
-import {_sorter} from "../privates/sorting";
+import partial from "@core/partial";
+import {_sorter} from "@privates/sorting";
+import {_} from "@privates/placeholders";
 
 /**
  * Creates a descending sort criterion with the provided <code>reader</code> and

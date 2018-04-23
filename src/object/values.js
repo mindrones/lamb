@@ -1,4 +1,4 @@
-import {_valuesFrom} from "../privates/object";
+import {_valuesFrom} from "@privates/object";
 import enumerables from "./enumerables";
 
 /**

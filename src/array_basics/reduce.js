@@ -1,4 +1,4 @@
-import {_makeReducer} from "../privates/array";
+import {_makeReducer} from "@privates/array";
 
 /**
  * Reduces (or folds) the values of an array-like object, starting from the first, to a new

@@ -1,5 +1,5 @@
-import {_getPathInfo} from "../privates/object";
-import {_toPathParts} from "../privates/string";
+import {_getPathInfo} from "@privates/object";
+import {_toPathParts} from "@privates/string";
 
 /**
  * Checks if the provided path exists in the given object.<br/>

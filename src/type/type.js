@@ -1,4 +1,4 @@
-import {_objectProto} from "../_intro";
+import {_objectProto} from "@src/utils";
 
 /**
  * Retrieves the "type tag" from the given value.
@@ -21,6 +21,6 @@ import {_objectProto} from "../_intro";
  * @param {*} value
  * @returns {String}
  */
-export function type (value) {
+export default function type (value) {
     return _objectProto.toString.call(value).slice(8, -1);
 }

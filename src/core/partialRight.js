@@ -1,4 +1,4 @@
-import {_isPlaceholder} from "../_intro";
+import {_isPlaceholder} from "@privates/placeholders";
 
 /**
  * Like {@link module:lamb.partial|partial} will build a partially applied function and

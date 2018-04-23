@@ -1,4 +1,4 @@
-import {_safeEnumerables, _unsafeKeyListFrom} from "../privates/object";
+import {_safeEnumerables, _unsafeKeyListFrom} from "@privates/object";
 
 /**
  * Creates an array with all the enumerable properties of the given object.

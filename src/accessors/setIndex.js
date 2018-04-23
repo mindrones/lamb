@@ -1,5 +1,5 @@
-import {_setIndex} from "../privates/array";
-import aritize from "../function/aritize";
+import {_setIndex} from "@privates/array";
+import aritize from "@function/aritize";
 
 /**
  * Creates a copy of an array-like object with the given index changed to

@@ -1,4 +1,4 @@
-import areSVZ from "../logic/areSVZ";
+import areSVZ from "@logic/areSVZ";
 
 /**
  * Checks if an array-like object contains the given value.<br/>

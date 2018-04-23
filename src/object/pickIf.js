@@ -1,5 +1,5 @@
-import {_makeTypeErrorFor} from "../privates/type";
-import isNil from "../type/isNil";
+import {_makeTypeErrorFor} from "@privates/type";
+import isNil from "@type/isNil";
 
 /**
  * Builds a function expecting an object whose enumerable properties will be checked

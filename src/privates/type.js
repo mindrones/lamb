@@ -1,4 +1,4 @@
-import {type} from "../type";
+import type from "@type/type";
 
 /**
  * Builds a TypeError stating that it's not possible to convert the given value to the

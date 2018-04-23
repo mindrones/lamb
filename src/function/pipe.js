@@ -1,4 +1,4 @@
-import compose from "../core/compose";
+import compose from "@core/compose";
 import flip from "./flip";
 
 /**

@@ -1,5 +1,5 @@
-import {_getNumConsecutiveHits} from "../privates/array";
-import slice from "../array_basics/slice";
+import {_getNumConsecutiveHits} from "@privates/array";
+import slice from "@array_basics/slice";
 
 /**
  * Builds a function that drops the first <code>n</code> elements satisfying a predicate

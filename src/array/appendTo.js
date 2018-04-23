@@ -1,4 +1,4 @@
-import slice from "../array_basics/slice";
+import slice from "@array_basics/slice";
 
 /**
  * Appends the given value at the end of a copy of the provided array-like object.

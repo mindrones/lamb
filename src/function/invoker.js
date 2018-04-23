@@ -1,6 +1,6 @@
-import partial from "../core/partial";
-import {_invoker} from "../privates/object";
-import {_argsTail} from "../privates/args";
+import partial from "@core/partial";
+import {_invoker} from "@privates/object";
+import {_argsTail} from "@privates/args";
 
 /**
  * Builds a function that will invoke the given method name on any received object and

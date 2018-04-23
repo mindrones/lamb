@@ -1,7 +1,7 @@
-import isNil from "../type/isNil";
-import {type} from "../type";
-import generic from "../core/generic";
-import {_stringProto} from "../_intro";
+import isNil from "@type/isNil";
+import type from "@type/type";
+import generic from "@core/generic";
+import {_stringProto} from "@src/utils";
 
 /**
  * Builds the prefix or suffix to be used when padding a string.

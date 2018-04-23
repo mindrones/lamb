@@ -1,4 +1,4 @@
-import has from "../object_checking/has";
+import has from "@object_checking/has";
 
 /**
  * Returns an object containing only the specified properties of the given object.<br/>

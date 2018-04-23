@@ -1,5 +1,5 @@
-import {_getPathInfo} from "../privates/object";
-import {_toPathParts} from "../privates/string";
+import {_getPathInfo} from "@privates/object";
+import {_toPathParts} from "@privates/string";
 
 /**
  * Builds a predicate that verifies if a condition is satisfied for the given

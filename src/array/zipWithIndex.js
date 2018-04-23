@@ -1,6 +1,6 @@
-import list from "../array_basics/list";
-import mapWith from "../array_basics/mapWith";
-import binary from "../function/binary";
+import list from "@array_basics/list";
+import mapWith from "@array_basics/mapWith";
+import binary from "@function/binary";
 
 /**
  * "{@link module:lamb.zip|Zips}" an array-like object by pairing its values with their index.

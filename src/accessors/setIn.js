@@ -1,6 +1,6 @@
-import {_makeTypeErrorFor} from "../privates/type";
-import {_setIn} from "../privates/object";
-import isNil from "../type/isNil";
+import {_makeTypeErrorFor} from "@privates/type";
+import {_setIn} from "@privates/object";
+import isNil from "@type/isNil";
 
 /**
  * Sets the specified key to the given value in a copy of the provided object.<br/>

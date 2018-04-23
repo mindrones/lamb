@@ -1,5 +1,5 @@
-import compose from "../core/compose";
-import not from "../logic/not";
+import compose from "@core/compose";
+import not from "@logic/not";
 import pickIf from "./pickIf";
 
 /**

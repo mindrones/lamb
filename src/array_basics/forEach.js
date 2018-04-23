@@ -1,4 +1,4 @@
-import {_toArrayLength} from "../privates/array";
+import {_toArrayLength} from "@privates/array";
 
 /**
  * Executes the provided <code>iteratee</code> for each element of the given array-like object.<br/>

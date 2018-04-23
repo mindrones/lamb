@@ -1,6 +1,6 @@
-import filter from "../array_basics/filter";
-import isIn from "../array_basics/isIn";
-import slice from "../array_basics/slice";
+import filter from "@array_basics/filter";
+import isIn from "@array_basics/isIn";
+import slice from "@array_basics/slice";
 
 /**
  * Creates an array copy of the given array-like object without the

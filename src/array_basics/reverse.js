@@ -1,4 +1,4 @@
-import {_toArrayLength} from "./privates/array"
+import {_toArrayLength} from "@privates/array"
 
 /**
  * Reverses a copy of the given array-like object.

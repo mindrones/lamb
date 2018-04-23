@@ -1,6 +1,6 @@
-import list from "../array_basics/list";
-import map from "../array_basics/map";
-import applyTo from "../function/applyTo";
+import list from "@array_basics/list";
+import map from "@array_basics/map";
+import applyTo from "@function/applyTo";
 
 /**
  * Accepts a series of functions and builds a new function. The functions in the series

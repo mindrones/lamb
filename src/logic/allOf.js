@@ -1,4 +1,4 @@
-import list from "../array_basics/list";
+import list from "@array_basics/list";
 
 /**
  * Accepts a series of predicates and builds a new one that returns true if they are all satisfied

@@ -1,4 +1,4 @@
-import partialRight from "../core/partialRight";
+import partialRight from "@core/partialRight";
 import updatePathIn from "./updatePathIn";
 
 /**

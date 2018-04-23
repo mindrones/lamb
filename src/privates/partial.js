@@ -1,6 +1,7 @@
-import partial from "../core/partial";
-import binary from "../function/binary";
-import {_, _placeholder} from "../_intro";
+import partial from "@core/partial";
+import binary from "@function/binary";
+import {_} from "@privates/placeholders";
+import {_placeholder} from "@src/lamb";
 
 /**
  * Keeps building a partial application of the received function as long

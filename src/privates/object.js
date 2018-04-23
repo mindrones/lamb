@@ -1,15 +1,15 @@
-import {_objectProto} from "../_intro";
-import getIn from "../accessors/getIn";
-import forEach from "../array_basics/forEach";
-import map from "../array_basics/map";
-import reduce from "../array_basics/reduce";
-import slice from "../array_basics/slice";
-import compose from "../core/compose";
-import generic from "../core/generic";
-import partial from "../core/partial";
-import isNil from "../type/isNil";
-import isNull from "../type/isNull";
-import isUndefined from "../type/isUndefined";
+import {_objectProto} from "@src/utils";
+import getIn from "@accessors/getIn";
+import forEach from "@array_basics/forEach";
+import map from "@array_basics/map";
+import reduce from "@array_basics/reduce";
+import slice from "@array_basics/slice";
+import compose from "@core/compose";
+import generic from "@core/generic";
+import partial from "@core/partial";
+import isNil from "@type/isNil";
+import isNull from "@type/isNull";
+import isUndefined from "@type/isUndefined";
 import {_argsTail} from "./args";
 import {_isArrayIndex, _setIndex} from "./array";
 import {_curry2} from "./currying";
@@ -194,7 +194,7 @@ export const _pairsFrom = _curry2(function (getKeys, obj) {
  * @param {Object} obj
  * @returns {String[]}
  */
-function _safeEnumerables (obj) {
+export function _safeEnumerables (obj) {
     var result = [];
 
     for (var key in obj) {

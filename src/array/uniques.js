@@ -1,4 +1,4 @@
-import identity from "../core/identity";
+import identity from "@core/identity";
 import uniquesBy from "./uniquesBy";
 
 /**

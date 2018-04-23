@@ -1,4 +1,4 @@
-import isUndefined from "../type/isUndefined";
+import isUndefined from "@type/isUndefined";
 
 /**
  * Verifies the existence of a property in an object.

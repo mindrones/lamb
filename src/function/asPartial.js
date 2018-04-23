@@ -1,4 +1,4 @@
-import {_asPartial} from "../privates/partial";
+import {_asPartial} from "@privates/partial";
 
 /**
  * Decorates the received function so that it can be called with

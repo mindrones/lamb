@@ -1,5 +1,5 @@
-import {_objectProto} from "../_intro";
-import generic from "../core/generic";
+import {_objectProto} from "@src/utils";
+import generic from "@core/generic";
 
 /**
  * Verifies if an object has the specified property and that the property isn't inherited through

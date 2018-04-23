@@ -1,4 +1,4 @@
-import {_getPadding} from "../privates/string";
+import {_getPadding} from "@privates/string";
 
 /**
  * Pads a string to the desired length with the given char starting from the end of the string.
