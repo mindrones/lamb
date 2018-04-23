@@ -1,8 +1,8 @@
-import {version} from "@src/utils";
+import {versionObj} from "@src/utils";
 
-const lamb = Object.create(null);
+var lamb = Object.create(null);
 
-export let _placeholder = lamb; // default value for public placeholder
+export var _placeholder = lamb; // default value for public placeholder
 
 Object.defineProperties(lamb, {
     /**
@@ -37,7 +37,7 @@ Object.defineProperties(lamb, {
      * @since 0.53.0
      * @type String
      */
-    "@@lamb/version": version
+    "@@lamb/version": versionObj
 });
 
 export default lamb;

@@ -44,7 +44,7 @@ export function _repeat (source, times) {
  * @param {RegExp} pattern
  * @return {Number}
  */
-export const _search = generic(_stringProto.search);
+export var _search = generic(_stringProto.search);
 
 /**
  * Splits a string path using the provided separator and returns an array

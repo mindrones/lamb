@@ -237,243 +237,240 @@ import type from "@type/type";
 // lamb
 import lamb from "@src/lamb";
 
-Object.assign(lamb, {
+// accessors
 
-    // accessors
+lamb.getAt = getAt;
+lamb.getIn = getIn;
+lamb.getIndex = getIndex;
+lamb.getKey = getKey;
+lamb.getPath = getPath;
+lamb.getPathIn = getPathIn;
+lamb.head = head;
+lamb.last = last;
+lamb.setAt = setAt;
+lamb.setIn = setIn;
+lamb.setIndex = setIndex;
+lamb.setKey = setKey;
+lamb.setPath = setPath;
+lamb.setPathIn = setPathIn;
+lamb.updateAt = updateAt;
+lamb.updateIn = updateIn;
+lamb.updateIndex = updateIndex;
+lamb.updateKey = updateKey;
+lamb.updatePath = updatePath;
+lamb.updatePathIn = updatePathIn;
 
-    getAt,
-    getIn,
-    getIndex,
-    getKey,
-    getPath,
-    getPathIn,
-    head,
-    last,
-    setAt,
-    setIn,
-    setIndex,
-    setKey,
-    setPath,
-    setPathIn,
-    updateAt,
-    updateIn,
-    updateIndex,
-    updateKey,
-    updatePath,
-    updatePathIn,
+// array
 
-    // array
+lamb.append = append;
+lamb.appendTo = appendTo;
+lamb.difference = difference;
+lamb.drop = drop;
+lamb.dropFrom = dropFrom;
+lamb.dropWhile = dropWhile;
+lamb.flatMap = flatMap;
+lamb.flatMapWith = flatMapWith;
+lamb.flatten = flatten;
+lamb.init = init;
+lamb.insert = insert;
+lamb.insertAt = insertAt;
+lamb.intersection = intersection;
+lamb.partition = partition;
+lamb.partitionWith = partitionWith;
+lamb.pluck = pluck;
+lamb.pluckKey = pluckKey;
+lamb.pull = pull;
+lamb.pullFrom = pullFrom;
+lamb.shallowFlatten = shallowFlatten;
+lamb.tail = tail;
+lamb.take = take;
+lamb.takeFrom = takeFrom;
+lamb.takeWhile = takeWhile;
+lamb.transpose = transpose;
+lamb.union = union;
+lamb.unionBy = unionBy;
+lamb.uniques = uniques;
+lamb.uniquesBy = uniquesBy;
+lamb.zip = zip;
+lamb.zipWithIndex = zipWithIndex;
 
-    append,
-    appendTo,
-    difference,
-    drop,
-    dropFrom,
-    dropWhile,
-    flatMap,
-    flatMapWith,
-    flatten,
-    init,
-    insert,
-    insertAt,
-    intersection,
-    partition,
-    partitionWith,
-    pluck,
-    pluckKey,
-    pull,
-    pullFrom,
-    shallowFlatten,
-    tail,
-    take,
-    takeFrom,
-    takeWhile,
-    transpose,
-    union,
-    unionBy,
-    uniques,
-    uniquesBy,
-    zip,
-    zipWithIndex,
+// array_basics
 
-    // array_basics
+lamb.contains = contains;
+lamb.every = every;
+lamb.everyIn = everyIn;
+lamb.filter = filter;
+lamb.filterWith = filterWith;
+lamb.find = find;
+lamb.findIndex = findIndex;
+lamb.findIndexWhere = findIndexWhere;
+lamb.findWhere = findWhere;
+lamb.forEach = forEach;
+lamb.isIn = isIn;
+lamb.list = list;
+lamb.map = map;
+lamb.mapWith = mapWith;
+lamb.reduce = reduce;
+lamb.reduceRight = reduceRight;
+lamb.reduceRightWith = reduceRightWith;
+lamb.reduceWith = reduceWith;
+lamb.reverse = reverse;
+lamb.slice = slice;
+lamb.sliceAt = sliceAt;
+lamb.some = some;
+lamb.someIn = someIn;
 
-    contains,
-    every,
-    everyIn,
-    filter,
-    filterWith,
-    find,
-    findIndex,
-    findIndexWhere,
-    findWhere,
-    forEach,
-    isIn,
-    list,
-    map,
-    mapWith,
-    reduce,
-    reduceRight,
-    reduceRightWith,
-    reduceWith,
-    reverse,
-    slice,
-    sliceAt,
-    some,
-    someIn,
+// core
 
-    // core
+lamb.always = always;
+lamb.compose = compose;
+lamb.generic = generic;
+lamb.identity = identity;
+lamb.partial = partial;
+lamb.partialRight = partialRight;
 
-    always,
-    compose,
-    generic,
-    identity,
-    partial,
-    partialRight,
+// function
 
-    // function
+lamb.application = application;
+lamb.apply = apply;
+lamb.applyTo = applyTo;
+lamb.aritize = aritize;
+lamb.asPartial = asPartial;
+lamb.binary = binary;
+lamb.collect = collect;
+lamb.curry = curry;
+lamb.curryRight = curryRight;
+lamb.curryable = curryable;
+lamb.curryableRight = curryableRight;
+lamb.debounce = debounce;
+lamb.flip = flip;
+lamb.getArgAt = getArgAt;
+lamb.invoker = invoker;
+lamb.invokerOn = invokerOn;
+lamb.mapArgs = mapArgs;
+lamb.pipe = pipe;
+lamb.tapArgs = tapArgs;
+lamb.throttle = throttle;
+lamb.unary = unary;
 
-    application,
-    apply,
-    applyTo,
-    aritize,
-    asPartial,
-    binary,
-    collect,
-    curry,
-    curryRight,
-    curryable,
-    curryableRight,
-    debounce,
-    flip,
-    getArgAt,
-    invoker,
-    invokerOn,
-    mapArgs,
-    pipe,
-    tapArgs,
-    throttle,
-    unary,
+// grouping
 
-    // grouping
+lamb.count = count;
+lamb.countBy = countBy;
+lamb.group = group;
+lamb.groupBy = groupBy;
+lamb.index = index;
+lamb.indexBy = indexBy;
 
-    count,
-    countBy,
-    group,
-    groupBy,
-    index,
-    indexBy,
+// logic
 
-    // logic
+lamb.adapter = adapter;
+lamb.allOf = allOf;
+lamb.anyOf = anyOf;
+lamb.areSVZ = areSVZ;
+lamb.areSame = areSame;
+lamb.case = case_;
+lamb.condition = condition;
+lamb.gt = gt;
+lamb.gte = gte;
+lamb.is = is;
+lamb.isGT = isGT;
+lamb.isGTE = isGTE;
+lamb.isLT = isLT;
+lamb.isLTE = isLTE;
+lamb.isSVZ = isSVZ;
+lamb.lt = lt;
+lamb.lte = lte;
+lamb.not = not;
+lamb.unless = unless;
+lamb.when = when;
 
-    adapter,
-    allOf,
-    anyOf,
-    areSVZ,
-    areSame,
-    case: case_,
-    condition,
-    gt,
-    gte,
-    is,
-    isGT,
-    isGTE,
-    isLT,
-    isLTE,
-    isSVZ,
-    lt,
-    lte,
-    not,
-    unless,
-    when,
+// math
 
-    // math
+lamb.add = add;
+lamb.clamp = clamp;
+lamb.clampWithin = clampWithin;
+lamb.deduct = deduct;
+lamb.divide = divide;
+lamb.divideBy = divideBy;
+lamb.generate = generate;
+lamb.isFinite = isFinite;
+lamb.isInteger = isInteger;
+lamb.isSafeInteger = isSafeInteger;
+lamb.modulo = modulo;
+lamb.multiply = multiply;
+lamb.multiplyBy = multiplyBy;
+lamb.randomInt = randomInt;
+lamb.range = range;
+lamb.remainder = remainder;
+lamb.subtract = subtract;
+lamb.sum = sum;
 
-    add,
-    clamp,
-    clampWithin,
-    deduct,
-    divide,
-    divideBy,
-    generate,
-    isFinite,
-    isInteger,
-    isSafeInteger,
-    modulo,
-    multiply,
-    multiplyBy,
-    randomInt,
-    range,
-    remainder,
-    subtract,
-    sum,
+// object
 
-    // object
+lamb.enumerables = enumerables;
+lamb.fromPairs = fromPairs;
+lamb.immutable = immutable;
+lamb.keys = keys;
+lamb.make = make;
+lamb.mapValues = mapValues;
+lamb.mapValuesWith = mapValuesWith;
+lamb.merge = merge;
+lamb.mergeOwn = mergeOwn;
+lamb.ownPairs = ownPairs;
+lamb.ownValues = ownValues;
+lamb.pairs = pairs;
+lamb.pick = pick;
+lamb.pickIf = pickIf;
+lamb.pickKeys = pickKeys;
+lamb.rename = rename;
+lamb.renameKeys = renameKeys;
+lamb.renameWith = renameWith;
+lamb.skip = skip;
+lamb.skipIf = skipIf;
+lamb.skipKeys = skipKeys;
+lamb.tear = tear;
+lamb.tearOwn = tearOwn;
+lamb.values = values;
 
-    enumerables,
-    fromPairs,
-    immutable,
-    keys,
-    make,
-    mapValues,
-    mapValuesWith,
-    merge,
-    mergeOwn,
-    ownPairs,
-    ownValues,
-    pairs,
-    pick,
-    pickIf,
-    pickKeys,
-    rename,
-    renameKeys,
-    renameWith,
-    skip,
-    skipIf,
-    skipKeys,
-    tear,
-    tearOwn,
-    values,
+// object_checking
 
-    // object_checking
+lamb.checker = checker;
+lamb.has = has;
+lamb.hasKey = hasKey;
+lamb.hasKeyValue = hasKeyValue;
+lamb.hasOwn = hasOwn;
+lamb.hasOwnKey = hasOwnKey;
+lamb.hasPathValue = hasPathValue;
+lamb.keySatisfies = keySatisfies;
+lamb.pathExists = pathExists;
+lamb.pathExistsIn = pathExistsIn;
+lamb.pathSatisfies = pathSatisfies;
+lamb.validate = validate;
+lamb.validateWith = validateWith;
 
-    checker,
-    has,
-    hasKey,
-    hasKeyValue,
-    hasOwn,
-    hasOwnKey,
-    hasPathValue,
-    keySatisfies,
-    pathExists,
-    pathExistsIn,
-    pathSatisfies,
-    validate,
-    validateWith,
+// sort
 
-    // sort
+lamb.sort = sort;
+lamb.sortWith = sortWith;
+lamb.sortedInsert = sortedInsert;
+lamb.sorter = sorter;
+lamb.sorterDesc = sorterDesc;
 
-    sort,
-    sortWith,
-    sortedInsert,
-    sorter,
-    sorterDesc,
+// string
 
-    // string
+lamb.padLeft = padLeft;
+lamb.padRight = padRight;
+lamb.repeat = repeat;
+lamb.testWith = testWith;
 
-    padLeft,
-    padRight,
-    repeat,
-    testWith,
+// type
 
-    // type
-
-    isInstanceOf,
-    isNil,
-    isNull,
-    isType,
-    isUndefined,
-    type
-});
+lamb.isInstanceOf = isInstanceOf;
+lamb.isNil = isNil;
+lamb.isNull = isNull;
+lamb.isType = isType;
+lamb.isUndefined = isUndefined;
+lamb.type = type;
 
 export default lamb;

@@ -1,11 +1,11 @@
-import pkg from "../package.json";
+import {version} from "../package.json";
 
 // prototype shortcuts
-export const _objectProto = Object.prototype;
-export const _stringProto = String.prototype;
+export var _objectProto = Object.prototype;
+export var _stringProto = String.prototype;
 
-// constants
-export const MAX_ARRAY_LENGTH = 4294967295;
+// varants
+export var MAX_ARRAY_LENGTH = 4294967295;
 
 // version
-export const version = {value: `${pkg.version}`};
+export var versionObj = {value: version};

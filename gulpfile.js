@@ -31,7 +31,7 @@ function lint () {
     // isolated because of shelljs, again
     var eslint = require("gulp-eslint");
 
-    return gulp.src(["./dist2/lamb.js", "./test/**"])
+    return gulp.src(["./dist/lamb.js", "./test/**"])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
@@ -88,17 +88,18 @@ gulp.task("build", () => {
     }).then(bundle => {
         return bundle.write({
             banner: header,
-            file: "dist2/lamb.js",
+            file: "dist/lamb.js",
             footer: footer,
             format: "umd",
             name: "lamb",
+            strict: false,
             sourcemap: true
         });
     });
 });
 
 gulp.task("coverage", ["build"], function (cb) {
-    gulp.src("./dist2/lamb.js")
+    gulp.src("./dist/lamb.js")
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
         .on("finish", function () {
@@ -112,14 +113,14 @@ gulp.task("coverage", ["build"], function (cb) {
 gulp.task("lint", ["build"], lint);
 
 gulp.task("minify", ["build"], function () {
-    return gulp.src("./dist2/lamb.js")
+    return gulp.src("./dist/lamb.js")
         .pipe(sourcemaps.init())
         .pipe(uglify({
             output: {comments: "some"}
         }))
         .pipe(rename({extname: ".min.js"}))
         .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest("./dist2/"));
+        .pipe(gulp.dest("./dist/"));
 });
 
 gulp.task("test", ["build"], function () {

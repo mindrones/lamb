@@ -17,4 +17,4 @@ import getAt from "./getAt";
  * @param {ArrayLike} arrayLike
  * @returns {*}
  */
- export default getAt(-1);
+export default getAt(-1);

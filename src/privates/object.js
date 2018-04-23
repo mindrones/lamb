@@ -144,7 +144,7 @@ export function _invoker (boundArgs, methodName, target) {
  * @param {String} key
  * @returns {Boolean}
  */
-export const _isOwnEnumerable = generic(_objectProto.propertyIsEnumerable);
+export var _isOwnEnumerable = generic(_objectProto.propertyIsEnumerable);
 
 /**
  * Accepts an object and build a function expecting a key to create a "pair" with the key
@@ -154,7 +154,7 @@ export const _isOwnEnumerable = generic(_objectProto.propertyIsEnumerable);
  * @param {Object} obj
  * @returns {Function}
  */
-export const _keyToPairIn = _curry2(function (obj, key) {
+export var _keyToPairIn = _curry2(function (obj, key) {
     return [key, obj[key]];
 });
 
@@ -183,7 +183,7 @@ export function _merge (getKeys) {
  * @param {Function} getKeys
  * @returns {Function}
  */
-export const _pairsFrom = _curry2(function (getKeys, obj) {
+export var _pairsFrom = _curry2(function (getKeys, obj) {
     return map(getKeys(obj), _keyToPairIn(obj));
 });
 
@@ -211,7 +211,7 @@ export function _safeEnumerables (obj) {
  * @param {Object} obj
  * @returns {String[]}
  */
-export const _safeKeys = compose(Object.keys, Object);
+export var _safeKeys = compose(Object.keys, Object);
 
 /**
  * Sets, or creates, a property in a copy of the provided object to the desired value.
@@ -272,7 +272,7 @@ export function _setPathIn (obj, parts, value) {
  * @param {Function} getKeys
  * @returns {Function}
  */
-export const _tearFrom = _curry2(function (getKeys, obj) {
+export var _tearFrom = _curry2(function (getKeys, obj) {
     return reduce(getKeys(obj), function (result, key) {
         result[0].push(key);
         result[1].push(obj[key]);
@@ -288,7 +288,7 @@ export const _tearFrom = _curry2(function (getKeys, obj) {
  * @param {Function} getKeys
  * @returns {Function}
  */
-export const _unsafeKeyListFrom = _curry2(function (getKeys, obj) {
+export var _unsafeKeyListFrom = _curry2(function (getKeys, obj) {
     if (isNil(obj)) {
         throw _makeTypeErrorFor(obj, "object");
     }
@@ -304,6 +304,6 @@ export const _unsafeKeyListFrom = _curry2(function (getKeys, obj) {
  * @param {Function} getKeys
  * @returns {Function}
  */
-export const _valuesFrom = _curry2(function (getKeys, obj) {
+export var _valuesFrom = _curry2(function (getKeys, obj) {
     return map(getKeys(obj), partial(getIn, [obj]));
 });

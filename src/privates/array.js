@@ -149,7 +149,7 @@ export function _makeArrayChecker (defaultResult) {
  * @param {Boolean} isDeep
  * @returns {Function}
  */
-export const _makeArrayFlattener = _curry2(function (isDeep, array) {
+export var _makeArrayFlattener = _curry2(function (isDeep, array) {
     return Array.isArray(array) ? _flatten(array, isDeep, [], 0) : slice(array, 0, array.length);
 });
 

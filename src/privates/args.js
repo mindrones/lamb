@@ -31,4 +31,4 @@ export function _argsToArrayFrom (idx) {
  * @param {...*} value
  * @returns {Array}
  */
-export const _argsTail = _argsToArrayFrom(1);
+export var _argsTail = _argsToArrayFrom(1);

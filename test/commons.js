@@ -1,7 +1,7 @@
 /* eslint-disable strict */
 // we don't want strict mode to leak inside jasmine
 
-var lamb = require("../dist2/lamb.js");
+var lamb = require("../dist/lamb.js");
 
 var equalities = require("./custom_equalities.js");
 

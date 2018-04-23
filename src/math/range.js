@@ -37,9 +37,9 @@ export default function range (start, limit, step) {
     var len = Math.max(Math.ceil((limit - start) / step), 0);
     var result = Array(len);
 
-    for (var i = 0, last = start; i < len; i++) {
-        result[i] = last;
-        last += step;
+    for (var i = 0, lastValue = start; i < len; i++) {
+        result[i] = lastValue;
+        lastValue += step;
     }
 
     return result;

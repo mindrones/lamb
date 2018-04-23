@@ -25,4 +25,4 @@ import setIn from "./setIn";
  * @param {*} value
  * @returns {Function}
  */
- export default _makePartial3(setIn);
+export default _makePartial3(setIn);
