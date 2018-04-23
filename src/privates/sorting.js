@@ -1,6 +1,6 @@
 import map from "@array_basics/map";
 import identity from "@core/identity";
-import {_comparer} from "./comparison";
+import _comparer from "./comparison/_comparer";
 
 /**
  * Builds a list of sorting criteria from a list of sorter functions. Returns a list containing

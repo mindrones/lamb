@@ -1,6 +1,6 @@
 import _argsTail from "@privates/args/_argsTail";
 import _toArrayLength from "@privates/array/_toArrayLength";
-import {_compareWith} from "@privates/comparison";
+import _compareWith from "@privates/comparison/_compareWith";
 import {_makeCriteria} from "@privates/sorting";
 
 /**
