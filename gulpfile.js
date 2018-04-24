@@ -1,12 +1,13 @@
 var fs = require("fs");
 var path = require("path");
 var gulp = require("gulp");
-var rollup = require('rollup');
-var rollupAlias = require('rollup-plugin-alias');
-var rollupJSON = require('rollup-plugin-json');
+var eslint = require("gulp-eslint");
 var istanbul = require("gulp-istanbul");
 var jasmine = require("gulp-jasmine");
 var rename = require("gulp-rename");
+var rollup = require('rollup');
+var rollupAlias = require('rollup-plugin-alias');
+var rollupJSON = require('rollup-plugin-json');
 var sourcemaps = require("gulp-sourcemaps");
 var uglify = require("gulp-uglify");
 
@@ -14,9 +15,6 @@ var uglify = require("gulp-uglify");
 
 var lint = function (paths) {
     return function () {
-        // isolated because of shelljs, again
-        var eslint = require("gulp-eslint");
-
         return gulp.src(paths)
             .pipe(eslint())
             .pipe(eslint.format())
@@ -112,34 +110,6 @@ gulp.task("test-verbose", ["build"], function () {
 });
 
 /* quality */
-
-// analysis (FIXME update paths)
-
-var scripts = [
-    "./src/core/*.js",
-    "./src/privates/**/*.js",
-    "./src/array_basics/*.js",
-    "./src/logic/*.js",
-    "./src/math/*.js",
-    "./src/type/*.js",
-    "./src/accessors/*.js",
-    "./src/array/*.js",
-    "./src/grouping/*.js",
-    "./src/sort/*.js",
-    "./src/function/*.js",
-    "./src/object/*.js",
-    "./src/object_checking/*.js",
-    "./src/string/*.js",
-    "./src/lamb.js",
-    "./src/utils.js"
-];
-
-gulp.task("analysis", function (done) {
-    // required here in an isolated task as plato loads jshint,
-    // which uses shelljs that pollutes the String.prototype
-    require("plato")
-        .inspect(scripts, "./plato_report", {title: "Lamb Analysis"}, function () {});
-});
 
 // coverage
 
