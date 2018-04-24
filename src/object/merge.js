@@ -1,4 +1,4 @@
-import {_merge} from "@privates/object";
+import _merge from "@privates/object/_merge";
 import partial from "@core/partial";
 import enumerables from "@object/enumerables";
 

@@ -1,4 +1,5 @@
-import {_safeKeys, _unsafeKeyListFrom} from "@privates/object";
+import _safeKeys from "@privates/object/_safeKeys";
+import _unsafeKeyListFrom from "@privates/object/_unsafeKeyListFrom";
 
 /**
  * Retrieves the list of the own enumerable properties of an object.<br/>

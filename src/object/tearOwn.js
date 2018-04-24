@@ -1,4 +1,4 @@
-import {_tearFrom} from "@privates/object";
+import _tearFrom from "@privates/object/_tearFrom";
 import keys from "./keys";
 
 /**

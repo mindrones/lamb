@@ -1,4 +1,4 @@
-import {_valuesFrom} from "@privates/object";
+import _valuesFrom from "@privates/object/_valuesFrom";
 import keys from "./keys";
 
 /**

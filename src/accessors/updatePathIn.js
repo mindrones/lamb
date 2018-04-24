@@ -1,5 +1,7 @@
 import {_toPathParts} from "@privates/string";
-import {_getPathInfo, _merge, _setPathIn} from "@privates/object";
+import _getPathInfo from "@privates/object/_getPathInfo";
+import _merge from "@privates/object/_merge";
+import _setPathIn from "@privates/object/_setPathIn";
 import enumerables from "@object/enumerables";
 import slice from "@array_basics/slice";
 

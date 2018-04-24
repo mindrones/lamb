@@ -1,5 +1,5 @@
 import areSVZ from "@logic/areSVZ";
-import {_getPathInfo} from "@privates/object";
+import _getPathInfo from "@privates/object/_getPathInfo";
 import {_toPathParts} from "@privates/string";
 
 /**

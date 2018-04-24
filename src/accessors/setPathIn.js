@@ -1,4 +1,4 @@
-import {_setPathIn} from "@privates/object";
+import _setPathIn from "@privates/object/_setPathIn";
 import {_toPathParts} from "@privates/string";
 import {_makeTypeErrorFor} from "@privates/type";
 import isNil from "@type/isNil";

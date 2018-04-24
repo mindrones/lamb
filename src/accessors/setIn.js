@@ -1,5 +1,5 @@
 import {_makeTypeErrorFor} from "@privates/type";
-import {_setIn} from "@privates/object";
+import _setIn from "@privates/object/_setIn";
 import isNil from "@type/isNil";
 
 /**

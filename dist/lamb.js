@@ -420,246 +420,6 @@
     }
 
     /**
-     * Executes the provided <code>iteratee</code> for each element of the given array-like object.<br/>
-     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
-     * @example <caption>Adding a CSS class to all elements of a NodeList in a browser environment:</caption>
-     * var addClass = _.curry(function (className, element) {
-     *     element.classList.add(className);
-     * });
-     * var paragraphs = document.querySelectorAll("#some-container p");
-     *
-     * _.forEach(paragraphs, addClass("main"));
-     * // each "p" element in the container will have the "main" class now
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike
-     * @param {ListIteratorCallback} iteratee
-     * @returns {Undefined}
-     */
-    function forEach (arrayLike, iteratee) {
-        for (var i = 0, len = _toArrayLength(arrayLike.length); i < len; i++) {
-            iteratee(arrayLike[i], i, arrayLike);
-        }
-    }
-
-    /**
-     * Builds a new array by applying the iteratee function to each element of the
-     * received array-like object.<br/>
-     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
-     * @example
-     * _.map(["Joe", "Mario", "Jane"], _.invoker("toUpperCase")) // => ["JOE", "MARIO", "JANE"]
-     *
-     * _.map([4, 9, 16], Math.sqrt); // => [2, 3, 4]
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @see {@link module:lamb.mapWith|mapWith}
-     * @see {@link module:lamb.flatMap|flatMap}, {@link module:lamb.flatMapWith|flatMapWith}
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike
-     * @param {ListIteratorCallback} iteratee
-     * @returns {Array}
-     */
-    function map (arrayLike, iteratee) {
-        var len = _toArrayLength(arrayLike.length);
-        var result = Array(len);
-
-        for (var i = 0; i < len; i++) {
-            result[i] = iteratee(arrayLike[i], i, arrayLike);
-        }
-
-        return result;
-    }
-
-    /**
-     * Builds a reduce function. The <code>step</code> parameter must be <code>1</code>
-     * to build  {@link module:lamb.reduce|reduce} and <code>-1</code> to build
-     * {@link module:lamb.reduceRight|reduceRight}.
-     * @private
-     * @param {Number} step
-     * @returns {Function}
-     */
-    function _makeReducer (step) {
-        return function (arrayLike, accumulator, initialValue) {
-            var len = _toArrayLength(arrayLike.length);
-            var idx = step === 1 ? 0 : len - 1;
-            var nCalls;
-            var result;
-
-            if (arguments.length === 3) {
-                nCalls = len;
-                result = initialValue;
-            } else {
-                if (len === 0) {
-                    throw new TypeError("Reduce of empty array-like with no initial value");
-                }
-
-                result = arrayLike[idx];
-                idx += step;
-                nCalls = len - 1;
-            }
-
-            for (; nCalls--; idx += step) {
-                result = accumulator(result, arrayLike[idx], idx, arrayLike);
-            }
-
-            return result;
-        };
-    }
-
-    /**
-     * Reduces (or folds) the values of an array-like object, starting from the first, to a new
-     * value using the provided <code>accumulator</code> function.<br/>
-     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
-     * @example
-     * _.reduce([1, 2, 3, 4], _.sum) // => 10
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @function reduce
-     * @see {@link module:lamb.reduceRight|reduceRight}
-     * @see {@link module:lamb.reduceWith|reduceWith}, {@link module:lamb.reduceRightWith|reduceRightWith}
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike
-     * @param {AccumulatorCallback} accumulator
-     * @param {*} [initialValue]
-     * @returns {*}
-     */
-    var reduce = _makeReducer(1);
-
-    /**
-     * Builds an array by extracting a portion of an array-like object.<br/>
-     * Note that unlike the native array method this function ensures that dense
-     * arrays are returned.<br/>
-     * Also, unlike the native method, the <code>start</code> and <code>end</code>
-     * parameters aren't optional and will be simply converted to integer.<br/>
-     * See {@link module:lamb.dropFrom|dropFrom} and {@link module:lamb.drop|drop} if you want a
-     * slice to the end of the array-like.
-     * @example
-     * var arr = [1, 2, 3, 4, 5];
-     *
-     * _.slice(arr, 0, 2) // => [1, 2]
-     * _.slice(arr, 2, -1) // => [3, 4]
-     * _.slice(arr, -3, 5) // => [3, 4, 5]
-     *
-     * @memberof module:lamb
-     * @category Array
-     * @see {@link module:lamb.sliceAt|sliceAt}
-     * @see {@link module:lamb.dropFrom|dropFrom}, {@link module:lamb.drop|drop}
-     * @since 0.1.0
-     * @param {ArrayLike} arrayLike - Any array like object.
-     * @param {Number} start - Index at which to begin extraction.
-     * @param {Number} end - Index at which to end extraction. Extracts up to but not including end.
-     * @returns {Array}
-     */
-    function slice (arrayLike, start, end) {
-        var len = _toArrayLength(arrayLike.length);
-        var begin = _toInteger(start);
-        var upTo = _toInteger(end);
-
-        if (begin < 0) {
-            begin = begin < -len ? 0 : begin + len;
-        }
-
-        if (upTo < 0) {
-            upTo = upTo < -len ? 0 : upTo + len;
-        } else if (upTo > len) {
-            upTo = len;
-        }
-
-        var resultLen = upTo - begin;
-        var result = resultLen > 0 ? Array(resultLen) : [];
-
-        for (var i = 0; i < resultLen; i++) {
-            result[i] = arrayLike[begin + i];
-        }
-
-        return result;
-    }
-
-    /**
-     * The I combinator. Any value passed to the function is simply returned as it is.
-     * @example
-     * var foo = {bar: "baz"};
-     *
-     * _.identity(foo) === foo // true
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @see [SKI combinator calculus]{@link https://en.wikipedia.org/wiki/SKI_combinator_calculus}
-     * @since 0.1.0
-     * @param {*} value
-     * @returns {*} The value passed as parameter.
-     */
-    function identity (value) {
-        return value;
-    }
-
-    /**
-     * Returns a function that is the composition of the functions given as parameters.
-     * Each function consumes the result of the function that follows.
-     * @example
-     * var sayHi = function (name) { return "Hi, " + name; };
-     * var capitalize = function (s) {
-     *     return s[0].toUpperCase() + s.substr(1).toLowerCase();
-     * };
-     * var fixNameAndSayHi = _.compose(sayHi, capitalize);
-     *
-     * sayHi("bOb") // => "Hi, bOb"
-     * fixNameAndSayHi("bOb") // "Hi, Bob"
-     *
-     * var users = [{name: "fred"}, {name: "bOb"}];
-     * var sayHiToUser = _.compose(fixNameAndSayHi, _.getKey("name"));
-     *
-     * _.map(users, sayHiToUser) // ["Hi, Fred", "Hi, Bob"]
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @see {@link module:lamb.pipe|pipe}
-     * @since 0.1.0
-     * @param {...Function} fn
-     * @returns {Function}
-     */
-    function compose () {
-        var functions = arguments;
-        var len = functions.length;
-
-        return len ? function () {
-            var idx = len - 1;
-            var result = functions[idx].apply(this, arguments);
-
-            while (idx--) {
-                result = functions[idx].call(this, result);
-            }
-
-            return result;
-        } : identity;
-    }
-
-    /**
-     * Creates generic functions out of methods.
-     * @author A very little change on a great idea by [Irakli Gozalishvili]{@link https://github.com/Gozala/}.
-     * Thanks for this *beautiful* one-liner (never liked your "unbind" naming choice, though).
-     * @example
-     * var join = _.generic(Array.prototype.join);
-     *
-     * join([1, 2, 3, 4, 5], "-") // => "1-2-3-4-5"
-     *
-     * // the function will work with any array-like object
-     * join("hello", "-") // => "h-e-l-l-o"
-     *
-     * @memberof module:lamb
-     * @category Function
-     * @function generic
-     * @since 0.1.0
-     * @param {Function} method
-     * @returns {Function}
-     */
-    var generic = Function.bind.bind(Function.call);
-
-    /**
      * Verifies if a value is <code>null</code>.
      * @example
      * _.isNull(null) // => true
@@ -717,74 +477,81 @@
     }
 
     /**
-     * Builds helper functions to extract portions of the arguments
-     * object rather efficiently without having to write for loops
-     * manually for each case.<br/>
-     * The arguments object needs to be passed to the apply method
-     * of the generated function.
-     * @private
-     * @param {Number} idx
+     * Creates generic functions out of methods.
+     * @author A very little change on a great idea by [Irakli Gozalishvili]{@link https://github.com/Gozala/}.
+     * Thanks for this *beautiful* one-liner (never liked your "unbind" naming choice, though).
+     * @example
+     * var join = _.generic(Array.prototype.join);
+     *
+     * join([1, 2, 3, 4, 5], "-") // => "1-2-3-4-5"
+     *
+     * // the function will work with any array-like object
+     * join("hello", "-") // => "h-e-l-l-o"
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @function generic
+     * @since 0.1.0
+     * @param {Function} method
      * @returns {Function}
      */
-    function _argsToArrayFrom (idx) {
-        return function () {
-            var argsLen = arguments.length || idx;
-            var len = argsLen - idx;
-            var result = Array(len);
-
-            for (var i = 0; i < len; i++) {
-                result[i] = arguments[i + idx];
-            }
-
-            return result;
-        };
-    }
+    var generic = Function.bind.bind(Function.call);
 
     /**
-     * Builds an array with the received arguments excluding the first one.<br/>
-     * To be used with the arguments object, which needs to be passed to the apply
-     * method of this function.
+     * Checks whether the specified key is a own enumerable property of the given object or not.
      * @private
-     * @function _argsTail
-     * @param {...*} value
-     * @returns {Array}
-     */
-    var _argsTail = _argsToArrayFrom(1);
-
-    /**
-     * Accepts a target object and a key name and verifies that the target is an array and that
-     * the key is an existing index.
-     * @private
-     * @param {Object} target
-     * @param {String|Number} key
+     * @function _isOwnEnumerable
+     * @param {Object} obj
+     * @param {String} key
      * @returns {Boolean}
      */
-    function _isArrayIndex (target, key) {
-        var n = +key;
-
-        return Array.isArray(target) && n % 1 === 0 && !(n < 0 && _isEnumerable(target, key));
-    }
+    var _isOwnEnumerable = generic(_objectProto.propertyIsEnumerable);
 
     /**
-     * Sets an index in an array-like object.<br/>
-     * If provided with an updater function it will use it to update the current value,
-     * otherwise sets the index to the specified value.
+     * Builds a list of the enumerable properties of an object.
+     * The function is null-safe, unlike the public one.
      * @private
-     * @param {ArrayLike} arrayLike
-     * @param {Number} idx
-     * @param {*} [value]
-     * @param {Function} [updater]
-     * @returns {Array}
+     * @param {Object} obj
+     * @returns {String[]}
      */
-    function _setIndex (arrayLike, idx, value, updater) {
-        var result = slice(arrayLike, 0, arrayLike.length);
-        var n = _toNaturalIndex(idx, result.length);
+    function _safeEnumerables (obj) {
+        var result = [];
 
-        if (n === n) { // eslint-disable-line no-self-compare
-            result[n] = arguments.length === 4 ? updater(arrayLike[n]) : value;
+        for (var key in obj) {
+            result.push(key);
         }
 
         return result;
+    }
+
+    /**
+     * Checks whether the specified key is an enumerable property of the given object or not.
+     * @private
+     * @param {Object} obj
+     * @param {String} key
+     * @returns {Boolean}
+     */
+    function _isEnumerable (obj, key) {
+        return key in Object(obj) && (_isOwnEnumerable(obj, key) || ~_safeEnumerables(obj).indexOf(key));
+    }
+
+    /**
+     * Helper to retrieve the correct key while evaluating a path.
+     * @private
+     * @param {Object} target
+     * @param {String} key
+     * @param {Boolean} includeNonEnumerables
+     * @returns {String|Number|Undefined}
+     */
+    function _getPathKey (target, key, includeNonEnumerables) {
+        if (includeNonEnumerables && key in Object(target) || _isEnumerable(target, key)) {
+            return key;
+        }
+
+        var n = +key;
+        var len = target && target.length;
+
+        return n >= -len && n < len ? n < 0 ? n + len : n : void 0;
     }
 
     /**
@@ -825,17 +592,6 @@
     }
 
     /**
-     * Checks whether the specified key is an enumerable property of the given object or not.
-     * @private
-     * @param {Object} obj
-     * @param {String} key
-     * @returns {Boolean}
-     */
-    function _isEnumerable (obj, key) {
-        return key in Object(obj) && (_isOwnEnumerable(obj, key) || ~_safeEnumerables(obj).indexOf(key));
-    }
-
-    /**
      * Checks if a path is valid in the given object and retrieves the path target.
      * @private
      * @param {Object} obj
@@ -865,257 +621,6 @@
 
         return i === len ? {isValid: true, target: target} : {isValid: false, target: void 0};
     }
-
-    /**
-     * Helper to retrieve the correct key while evaluating a path.
-     * @private
-     * @param {Object} target
-     * @param {String} key
-     * @param {Boolean} includeNonEnumerables
-     * @returns {String|Number|Undefined}
-     */
-    function _getPathKey (target, key, includeNonEnumerables) {
-        if (includeNonEnumerables && key in Object(target) || _isEnumerable(target, key)) {
-            return key;
-        }
-
-        var n = +key;
-        var len = target && target.length;
-
-        return n >= -len && n < len ? n < 0 ? n + len : n : void 0;
-    }
-
-    /**
-     * Makes an object immutable by recursively calling <code>Object.freeze</code>
-     * on its members.
-     * @private
-     * @param {Object} obj
-     * @param {Array} seen
-     * @returns {Object} The obj parameter itself, not a copy.
-     */
-    function _immutable (obj, seen) {
-        if (seen.indexOf(obj) === -1) {
-            seen.push(Object.freeze(obj));
-
-            forEach(Object.getOwnPropertyNames(obj), function (key) {
-                var value = obj[key];
-
-                if (typeof value === "object" && !isNull(value)) {
-                    _immutable(value, seen);
-                }
-            });
-        }
-
-        return obj;
-    }
-
-    /**
-     * If a method with the given name exists on the target, applies it to the provided
-     * arguments and returns the result. Returns <code>undefined</code> otherwise.<br/>
-     * The arguments for the method are built by concatenating the array of bound arguments,
-     * optionally received by {@link module:lamb.invoker|invoker}, with the final set of, also
-     * optional, <code>args</code>.
-     * @private
-     * @param {Array} boundArgs
-     * @param {String} methodName
-     * @param {Object} target
-     * @param {...*} [args]
-     * @returns {*}
-     */
-    function _invoker (boundArgs, methodName, target) {
-        var method = target[methodName];
-
-        if (typeof method !== "function") {
-            return void 0;
-        }
-
-        var boundArgsLen = boundArgs.length;
-        var ofs = 3 - boundArgsLen;
-        var len = arguments.length - ofs;
-        var args = Array(len);
-
-        for (var i = 0; i < boundArgsLen; i++) {
-            args[i] = boundArgs[i];
-        }
-
-        for (; i < len; i++) {
-            args[i] = arguments[i + ofs];
-        }
-
-        return method.apply(target, args);
-    }
-
-    /**
-     * Checks whether the specified key is a own enumerable property of the given object or not.
-     * @private
-     * @function
-     * @param {Object} obj
-     * @param {String} key
-     * @returns {Boolean}
-     */
-    var _isOwnEnumerable = generic(_objectProto.propertyIsEnumerable);
-
-    /**
-     * Accepts an object and build a function expecting a key to create a "pair" with the key
-     * and its value.
-     * @private
-     * @function
-     * @param {Object} obj
-     * @returns {Function}
-     */
-    var _keyToPairIn = _curry2(function (obj, key) {
-        return [key, obj[key]];
-    });
-
-    /**
-     * Merges the received objects using the provided function to retrieve their keys.
-     * @private
-     * @param {Function} getKeys
-     * @param {...Object} source
-     * @returns {Object}
-     */
-    function _merge (getKeys) {
-        return reduce(_argsTail.apply(null, arguments), function (result, source) {
-            forEach(getKeys(source), function (key) {
-                result[key] = source[key];
-            });
-
-            return result;
-        }, {});
-    }
-
-    /**
-     * Using the provided function to retrieve the keys, builds a new function
-     * expecting an object to create a list of key / value pairs.
-     * @private
-     * @function
-     * @param {Function} getKeys
-     * @returns {Function}
-     */
-    var _pairsFrom = _curry2(function (getKeys, obj) {
-        return map(getKeys(obj), _keyToPairIn(obj));
-    });
-
-    /**
-     * Builds a list of the enumerable properties of an object.
-     * The function is null-safe, unlike the public one.
-     * @private
-     * @param {Object} obj
-     * @returns {String[]}
-     */
-    function _safeEnumerables (obj) {
-        var result = [];
-
-        for (var key in obj) {
-            result.push(key);
-        }
-
-        return result;
-    }
-
-    /**
-     * A null-safe version of <code>Object.keys</code>.
-     * @private
-     * @function
-     * @param {Object} obj
-     * @returns {String[]}
-     */
-    var _safeKeys = compose(Object.keys, Object);
-
-    /**
-     * Sets, or creates, a property in a copy of the provided object to the desired value.
-     * @private
-     * @param {Object} source
-     * @param {String} key
-     * @param {*} value
-     * @returns {Object}
-     */
-    function _setIn (source, key, value) {
-        var result = {};
-
-        for (var prop in source) {
-            result[prop] = source[prop];
-        }
-
-        result[key] = value;
-
-        return result;
-    }
-
-    /**
-     * Sets the object's property targeted by the given path to the desired value.<br/>
-     * Works with arrays and is able to set their indexes, even negative ones.
-     * @private
-     * @param {Object|Array} obj
-     * @param {String[]} parts
-     * @param {*} value
-     * @returns {Object|Array}
-     */
-    function _setPathIn (obj, parts, value) {
-        var key = parts[0];
-        var partsLen = parts.length;
-        var v;
-
-        if (partsLen === 1) {
-            v = value;
-        } else {
-            var targetKey = _getPathKey(obj, key, false);
-
-            v = _setPathIn(
-                isUndefined(targetKey) ? targetKey : obj[targetKey],
-                slice(parts, 1, partsLen),
-                value
-            );
-        }
-
-        return _isArrayIndex(obj, key) ? _setIndex(obj, key, v) : _setIn(obj, key, v);
-    }
-
-    /**
-     * Using the provided function to retrieve the keys of an object, builds
-     * a function expecting an object to create an array containing a list
-     * of the keys in its first index and the corresponding list of values
-     * in the second one.
-     * @private
-     * @function
-     * @param {Function} getKeys
-     * @returns {Function}
-     */
-    var _tearFrom = _curry2(function (getKeys, obj) {
-        return reduce(getKeys(obj), function (result, key) {
-            result[0].push(key);
-            result[1].push(obj[key]);
-
-            return result;
-        }, [[], []]);
-    });
-
-    /**
-     * Creates a non-null-safe version of the provided "getKeys" function.
-     * @private
-     * @function
-     * @param {Function} getKeys
-     * @returns {Function}
-     */
-    var _unsafeKeyListFrom = _curry2(function (getKeys, obj) {
-        if (isNil(obj)) {
-            throw _makeTypeErrorFor(obj, "object");
-        }
-
-        return getKeys(obj);
-    });
-
-    /**
-     * Using the provided function to retrieve the keys of an object, builds
-     * a function expecting an object to create the list of values for such keys.
-     * @private
-     * @function
-     * @param {Function} getKeys
-     * @returns {Function}
-     */
-    var _valuesFrom = _curry2(function (getKeys, obj) {
-        return map(getKeys(obj), partial(getIn, [obj]));
-    });
 
     /**
      * Builds the prefix or suffix to be used when padding a string.
@@ -1297,6 +802,78 @@
     var last = getAt(-1);
 
     /**
+     * Builds an array by extracting a portion of an array-like object.<br/>
+     * Note that unlike the native array method this function ensures that dense
+     * arrays are returned.<br/>
+     * Also, unlike the native method, the <code>start</code> and <code>end</code>
+     * parameters aren't optional and will be simply converted to integer.<br/>
+     * See {@link module:lamb.dropFrom|dropFrom} and {@link module:lamb.drop|drop} if you want a
+     * slice to the end of the array-like.
+     * @example
+     * var arr = [1, 2, 3, 4, 5];
+     *
+     * _.slice(arr, 0, 2) // => [1, 2]
+     * _.slice(arr, 2, -1) // => [3, 4]
+     * _.slice(arr, -3, 5) // => [3, 4, 5]
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @see {@link module:lamb.sliceAt|sliceAt}
+     * @see {@link module:lamb.dropFrom|dropFrom}, {@link module:lamb.drop|drop}
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike - Any array like object.
+     * @param {Number} start - Index at which to begin extraction.
+     * @param {Number} end - Index at which to end extraction. Extracts up to but not including end.
+     * @returns {Array}
+     */
+    function slice (arrayLike, start, end) {
+        var len = _toArrayLength(arrayLike.length);
+        var begin = _toInteger(start);
+        var upTo = _toInteger(end);
+
+        if (begin < 0) {
+            begin = begin < -len ? 0 : begin + len;
+        }
+
+        if (upTo < 0) {
+            upTo = upTo < -len ? 0 : upTo + len;
+        } else if (upTo > len) {
+            upTo = len;
+        }
+
+        var resultLen = upTo - begin;
+        var result = resultLen > 0 ? Array(resultLen) : [];
+
+        for (var i = 0; i < resultLen; i++) {
+            result[i] = arrayLike[begin + i];
+        }
+
+        return result;
+    }
+
+    /**
+     * Sets an index in an array-like object.<br/>
+     * If provided with an updater function it will use it to update the current value,
+     * otherwise sets the index to the specified value.
+     * @private
+     * @param {ArrayLike} arrayLike
+     * @param {Number} idx
+     * @param {*} [value]
+     * @param {Function} [updater]
+     * @returns {Array}
+     */
+    function _setIndex (arrayLike, idx, value, updater) {
+        var result = slice(arrayLike, 0, arrayLike.length);
+        var n = _toNaturalIndex(idx, result.length);
+
+        if (n === n) { // eslint-disable-line no-self-compare
+            result[n] = arguments.length === 4 ? updater(arrayLike[n]) : value;
+        }
+
+        return result;
+    }
+
+    /**
      * Builds a function that creates a copy of an array-like object with the given
      * index changed to the desired value.<br/>
      * If the index is not an integer or if it's out of bounds, the function
@@ -1323,6 +900,26 @@
      * @returns {Function}
      */
     var setAt = _makePartial3(_setIndex);
+
+    /**
+     * Sets, or creates, a property in a copy of the provided object to the desired value.
+     * @private
+     * @param {Object} source
+     * @param {String} key
+     * @param {*} value
+     * @returns {Object}
+     */
+    function _setIn (source, key, value) {
+        var result = {};
+
+        for (var prop in source) {
+            result[prop] = source[prop];
+        }
+
+        result[key] = value;
+
+        return result;
+    }
 
     /**
      * Sets the specified key to the given value in a copy of the provided object.<br/>
@@ -1359,6 +956,30 @@
         }
 
         return _setIn(source, key, value);
+    }
+
+    /**
+     * Builds helper functions to extract portions of the arguments
+     * object rather efficiently without having to write for loops
+     * manually for each case.<br/>
+     * The arguments object needs to be passed to the apply method
+     * of the generated function.
+     * @private
+     * @param {Number} idx
+     * @returns {Function}
+     */
+    function _argsToArrayFrom (idx) {
+        return function () {
+            var argsLen = arguments.length || idx;
+            var len = argsLen - idx;
+            var result = Array(len);
+
+            for (var i = 0; i < len; i++) {
+                result[i] = arguments[i + idx];
+            }
+
+            return result;
+        };
     }
 
     /**
@@ -1521,6 +1142,49 @@
     }
 
     /**
+     * Accepts a target object and a key name and verifies that the target is an array and that
+     * the key is an existing index.
+     * @private
+     * @param {Object} target
+     * @param {String|Number} key
+     * @returns {Boolean}
+     */
+    function _isArrayIndex (target, key) {
+        var n = +key;
+
+        return Array.isArray(target) && n % 1 === 0 && !(n < 0 && _isEnumerable(target, key));
+    }
+
+    /**
+     * Sets the object's property targeted by the given path to the desired value.<br/>
+     * Works with arrays and is able to set their indexes, even negative ones.
+     * @private
+     * @param {Object|Array} obj
+     * @param {String[]} parts
+     * @param {*} value
+     * @returns {Object|Array}
+     */
+    function _setPathIn (obj, parts, value) {
+        var key = parts[0];
+        var partsLen = parts.length;
+        var v;
+
+        if (partsLen === 1) {
+            v = value;
+        } else {
+            var targetKey = _getPathKey(obj, key, false);
+
+            v = _setPathIn(
+                isUndefined(targetKey) ? targetKey : obj[targetKey],
+                slice(parts, 1, partsLen),
+                value
+            );
+        }
+
+        return _isArrayIndex(obj, key) ? _setIndex(obj, key, v) : _setIn(obj, key, v);
+    }
+
+    /**
      * Allows to change a nested value in a copy of the provided object.<br/>
      * The function will delegate the "set action" to {@link module:lamb.setIn|setIn} or
      * {@link module:lamb.setAt|setAt} depending on the value encountered in the path,
@@ -1634,6 +1298,21 @@
     }
 
     /**
+     * Creates a non-null-safe version of the provided "getKeys" function.
+     * @private
+     * @function _unsafeKeyListFrom
+     * @param {Function} getKeys
+     * @returns {Function}
+     */
+    var _unsafeKeyListFrom = _curry2(function (getKeys, obj) {
+        if (isNil(obj)) {
+            throw _makeTypeErrorFor(obj, "object");
+        }
+
+        return getKeys(obj);
+    });
+
+    /**
      * Creates an array with all the enumerable properties of the given object.
      * @example <caption>Showing the difference with {@link module:lamb.keys|keys}:</caption>
      * var baseFoo = Object.create({a: 1}, {b: {value: 2}});
@@ -1654,6 +1333,115 @@
      * @returns {String[]}
      */
     var enumerables = _unsafeKeyListFrom(_safeEnumerables);
+
+    /**
+     * Executes the provided <code>iteratee</code> for each element of the given array-like object.<br/>
+     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * @example <caption>Adding a CSS class to all elements of a NodeList in a browser environment:</caption>
+     * var addClass = _.curry(function (className, element) {
+     *     element.classList.add(className);
+     * });
+     * var paragraphs = document.querySelectorAll("#some-container p");
+     *
+     * _.forEach(paragraphs, addClass("main"));
+     * // each "p" element in the container will have the "main" class now
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike
+     * @param {ListIteratorCallback} iteratee
+     * @returns {Undefined}
+     */
+    function forEach (arrayLike, iteratee) {
+        for (var i = 0, len = _toArrayLength(arrayLike.length); i < len; i++) {
+            iteratee(arrayLike[i], i, arrayLike);
+        }
+    }
+
+    /**
+     * Builds a reduce function. The <code>step</code> parameter must be <code>1</code>
+     * to build  {@link module:lamb.reduce|reduce} and <code>-1</code> to build
+     * {@link module:lamb.reduceRight|reduceRight}.
+     * @private
+     * @param {Number} step
+     * @returns {Function}
+     */
+    function _makeReducer (step) {
+        return function (arrayLike, accumulator, initialValue) {
+            var len = _toArrayLength(arrayLike.length);
+            var idx = step === 1 ? 0 : len - 1;
+            var nCalls;
+            var result;
+
+            if (arguments.length === 3) {
+                nCalls = len;
+                result = initialValue;
+            } else {
+                if (len === 0) {
+                    throw new TypeError("Reduce of empty array-like with no initial value");
+                }
+
+                result = arrayLike[idx];
+                idx += step;
+                nCalls = len - 1;
+            }
+
+            for (; nCalls--; idx += step) {
+                result = accumulator(result, arrayLike[idx], idx, arrayLike);
+            }
+
+            return result;
+        };
+    }
+
+    /**
+     * Reduces (or folds) the values of an array-like object, starting from the first, to a new
+     * value using the provided <code>accumulator</code> function.<br/>
+     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * @example
+     * _.reduce([1, 2, 3, 4], _.sum) // => 10
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @function reduce
+     * @see {@link module:lamb.reduceRight|reduceRight}
+     * @see {@link module:lamb.reduceWith|reduceWith}, {@link module:lamb.reduceRightWith|reduceRightWith}
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike
+     * @param {AccumulatorCallback} accumulator
+     * @param {*} [initialValue]
+     * @returns {*}
+     */
+    var reduce = _makeReducer(1);
+
+    /**
+     * Builds an array with the received arguments excluding the first one.<br/>
+     * To be used with the arguments object, which needs to be passed to the apply
+     * method of this function.
+     * @private
+     * @function _argsTail
+     * @param {...*} value
+     * @returns {Array}
+     */
+    var _argsTail = _argsToArrayFrom(1);
+
+    /**
+     * Merges the received objects using the provided function to retrieve their keys.
+     * @private
+     * @param {Function} getKeys
+     * @param {...Object} source
+     * @returns {Object}
+     */
+    function _merge (getKeys) {
+        return reduce(_argsTail.apply(null, arguments), function (result, source) {
+            forEach(getKeys(source), function (key) {
+                result[key] = source[key];
+            });
+
+            return result;
+        }, {});
+    }
 
     /**
      * Creates a copy of the given object having the desired key value updated by applying
@@ -1980,6 +1768,24 @@
         return function () {
             return !predicate.apply(this, arguments);
         };
+    }
+
+    /**
+     * The I combinator. Any value passed to the function is simply returned as it is.
+     * @example
+     * var foo = {bar: "baz"};
+     *
+     * _.identity(foo) === foo // true
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @see [SKI combinator calculus]{@link https://en.wikipedia.org/wiki/SKI_combinator_calculus}
+     * @since 0.1.0
+     * @param {*} value
+     * @returns {*} The value passed as parameter.
+     */
+    function identity (value) {
+        return value;
     }
 
     /**
@@ -2534,6 +2340,35 @@
     var partitionWith = _curry2(partition, true);
 
     /**
+     * Builds a new array by applying the iteratee function to each element of the
+     * received array-like object.<br/>
+     * Note that unlike the native array method this function doesn't skip unassigned or deleted indexes.
+     * @example
+     * _.map(["Joe", "Mario", "Jane"], _.invoker("toUpperCase")) // => ["JOE", "MARIO", "JANE"]
+     *
+     * _.map([4, 9, 16], Math.sqrt); // => [2, 3, 4]
+     *
+     * @memberof module:lamb
+     * @category Array
+     * @see {@link module:lamb.mapWith|mapWith}
+     * @see {@link module:lamb.flatMap|flatMap}, {@link module:lamb.flatMapWith|flatMapWith}
+     * @since 0.1.0
+     * @param {ArrayLike} arrayLike
+     * @param {ListIteratorCallback} iteratee
+     * @returns {Array}
+     */
+    function map (arrayLike, iteratee) {
+        var len = _toArrayLength(arrayLike.length);
+        var result = Array(len);
+
+        for (var i = 0; i < len; i++) {
+            result[i] = iteratee(arrayLike[i], i, arrayLike);
+        }
+
+        return result;
+    }
+
+    /**
      * "Plucks" the values of the specified key from a list of objects.
      * @example
      * var persons = [
@@ -2584,6 +2419,47 @@
      * @returns {function}
      */
     var mapWith = _curry2(map, true);
+
+    /**
+     * Returns a function that is the composition of the functions given as parameters.
+     * Each function consumes the result of the function that follows.
+     * @example
+     * var sayHi = function (name) { return "Hi, " + name; };
+     * var capitalize = function (s) {
+     *     return s[0].toUpperCase() + s.substr(1).toLowerCase();
+     * };
+     * var fixNameAndSayHi = _.compose(sayHi, capitalize);
+     *
+     * sayHi("bOb") // => "Hi, bOb"
+     * fixNameAndSayHi("bOb") // "Hi, Bob"
+     *
+     * var users = [{name: "fred"}, {name: "bOb"}];
+     * var sayHiToUser = _.compose(fixNameAndSayHi, _.getKey("name"));
+     *
+     * _.map(users, sayHiToUser) // ["Hi, Fred", "Hi, Bob"]
+     *
+     * @memberof module:lamb
+     * @category Function
+     * @see {@link module:lamb.pipe|pipe}
+     * @since 0.1.0
+     * @param {...Function} fn
+     * @returns {Function}
+     */
+    function compose () {
+        var functions = arguments;
+        var len = functions.length;
+
+        return len ? function () {
+            var idx = len - 1;
+            var result = functions[idx].apply(this, arguments);
+
+            while (idx--) {
+                result = functions[idx].call(this, result);
+            }
+
+            return result;
+        } : identity;
+    }
 
     /**
      * A curried version of {@link module:lamb.pluck|pluck} expecting the key to retrieve to
@@ -3668,6 +3544,42 @@
         return function () {
             return arguments[_toNaturalIndex(idx, arguments.length)];
         };
+    }
+
+    /**
+     * If a method with the given name exists on the target, applies it to the provided
+     * arguments and returns the result. Returns <code>undefined</code> otherwise.<br/>
+     * The arguments for the method are built by concatenating the array of bound arguments,
+     * optionally received by {@link module:lamb.invoker|invoker}, with the final set of, also
+     * optional, <code>args</code>.
+     * @private
+     * @param {Array} boundArgs
+     * @param {String} methodName
+     * @param {Object} target
+     * @param {...*} [args]
+     * @returns {*}
+     */
+    function _invoker (boundArgs, methodName, target) {
+        var method = target[methodName];
+
+        if (typeof method !== "function") {
+            return void 0;
+        }
+
+        var boundArgsLen = boundArgs.length;
+        var ofs = 3 - boundArgsLen;
+        var len = arguments.length - ofs;
+        var args = Array(len);
+
+        for (var i = 0; i < boundArgsLen; i++) {
+            args[i] = boundArgs[i];
+        }
+
+        for (; i < len; i++) {
+            args[i] = arguments[i + ofs];
+        }
+
+        return method.apply(target, args);
     }
 
     /**
@@ -5109,6 +5021,30 @@
     }
 
     /**
+     * Makes an object immutable by recursively calling <code>Object.freeze</code>
+     * on its members.
+     * @private
+     * @param {Object} obj
+     * @param {Array} seen
+     * @returns {Object} The obj parameter itself, not a copy.
+     */
+    function _immutable (obj, seen) {
+        if (seen.indexOf(obj) === -1) {
+            seen.push(Object.freeze(obj));
+
+            forEach(Object.getOwnPropertyNames(obj), function (key) {
+                var value = obj[key];
+
+                if (typeof value === "object" && !isNull(value)) {
+                    _immutable(value, seen);
+                }
+            });
+        }
+
+        return obj;
+    }
+
+    /**
      * Makes an object immutable by recursively calling [Object.freeze]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze}
      * on its members.<br/>
      * Any attempt to extend or modify the object can throw a <code>TypeError</code> or fail silently,
@@ -5141,6 +5077,15 @@
     function immutable (obj) {
         return _immutable(obj, []);
     }
+
+    /**
+     * A null-safe version of <code>Object.keys</code>.
+     * @private
+     * @function _safeKeys
+     * @param {Object} obj
+     * @returns {String[]}
+     */
+    var _safeKeys = compose(Object.keys, Object);
 
     /**
      * Retrieves the list of the own enumerable properties of an object.<br/>
@@ -5312,6 +5257,30 @@
     var mergeOwn = partial(_merge, [keys]);
 
     /**
+     * Accepts an object and build a function expecting a key to create a "pair" with the key
+     * and its value.
+     * @private
+     * @function _keyToPairIn
+     * @param {Object} obj
+     * @returns {Function}
+     */
+    var _keyToPairIn = _curry2(function (obj, key) {
+        return [key, obj[key]];
+    });
+
+    /**
+     * Using the provided function to retrieve the keys, builds a new function
+     * expecting an object to create a list of key / value pairs.
+     * @private
+     * @function _pairsFrom
+     * @param {Function} getKeys
+     * @returns {Function}
+     */
+    var _pairsFrom = _curry2(function (getKeys, obj) {
+        return map(getKeys(obj), _keyToPairIn(obj));
+    });
+
+    /**
      * Same as {@link module:lamb.pairs|pairs}, but only the own enumerable properties of the object are
      * taken into account.<br/>
      * See also {@link module:lamb.fromPairs|fromPairs} for the reverse operation.
@@ -5334,6 +5303,18 @@
      * @returns {Array<Array<String, *>>}
      */
     var ownPairs = _pairsFrom(keys);
+
+    /**
+     * Using the provided function to retrieve the keys of an object, builds
+     * a function expecting an object to create the list of values for such keys.
+     * @private
+     * @function _valuesFrom
+     * @param {Function} getKeys
+     * @returns {Function}
+     */
+    var _valuesFrom = _curry2(function (getKeys, obj) {
+        return map(getKeys(obj), partial(getIn, [obj]));
+    });
 
     /**
      * Same as {@link module:lamb.values|values}, but only the own enumerable properties of the object are
@@ -5713,6 +5694,25 @@
      * @returns {Function}
      */
     var skipKeys = _curry2(skip, true);
+
+    /**
+     * Using the provided function to retrieve the keys of an object, builds
+     * a function expecting an object to create an array containing a list
+     * of the keys in its first index and the corresponding list of values
+     * in the second one.
+     * @private
+     * @function _tearFrom
+     * @param {Function} getKeys
+     * @returns {Function}
+     */
+    var _tearFrom = _curry2(function (getKeys, obj) {
+        return reduce(getKeys(obj), function (result, key) {
+            result[0].push(key);
+            result[1].push(obj[key]);
+
+            return result;
+        }, [[], []]);
+    });
 
     /**
      * Tears an object apart by transforming it in an array of two lists: one containing

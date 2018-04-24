@@ -1,5 +1,5 @@
 import partial from "@core/partial";
-import {_invoker} from "@privates/object";
+import _invoker from "@privates/object/_invoker";
 import {_} from "@privates/placeholders";
 
 /**

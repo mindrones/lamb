@@ -1,5 +1,7 @@
 import enumerables from "@object/enumerables";
-import {_isEnumerable, _merge, _setIn} from "@privates/object";
+import _isEnumerable from "@privates/object/_isEnumerable";
+import _merge from "@privates/object/_merge";
+import _setIn from "@privates/object/_setIn";
 
 /**
  * Creates a copy of the given object having the desired key value updated by applying
