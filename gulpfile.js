@@ -116,20 +116,22 @@ gulp.task("test-verbose", ["build"], function () {
 // analysis (FIXME update paths)
 
 var scripts = [
-    "./src/core.js",
-    "./src/privates.js",
-    "./src/array_basics.js",
-    "./src/logic.js",
-    "./src/math.js",
-    "./src/type.js",
-    "./src/accessors.js",
-    "./src/array.js",
-    "./src/grouping.js",
-    "./src/sort.js",
-    "./src/function.js",
-    "./src/object.js",
-    "./src/object_checking.js",
-    "./src/string.js"
+    "./src/core/*.js",
+    "./src/privates/**/*.js",
+    "./src/array_basics/*.js",
+    "./src/logic/*.js",
+    "./src/math/*.js",
+    "./src/type/*.js",
+    "./src/accessors/*.js",
+    "./src/array/*.js",
+    "./src/grouping/*.js",
+    "./src/sort/*.js",
+    "./src/function/*.js",
+    "./src/object/*.js",
+    "./src/object_checking/*.js",
+    "./src/string/*.js",
+    "./src/lamb.js",
+    "./src/utils.js"
 ];
 
 gulp.task("analysis", function (done) {
