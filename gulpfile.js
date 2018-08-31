@@ -1,57 +1,63 @@
+/* eslint-disable require-jsdoc */
+
 var fs = require("fs");
 var gulp = require("gulp");
-var pkg = require("./package.json");
-var concat = require("gulp-concat");
 var eslint = require("gulp-eslint");
-var footer = require("gulp-footer");
-var header = require("gulp-header");
-var indent = require("gulp-indent");
-var istanbul = require("gulp-istanbul");
-var jasmine = require("gulp-jasmine");
+var filesize = require("rollup-plugin-filesize");
+var jest = require("gulp-jest").default;
 var rename = require("gulp-rename");
+var rollup = require("rollup");
+var rollupJSON = require("rollup-plugin-json");
 var sourcemaps = require("gulp-sourcemaps");
 var uglify = require("gulp-uglify");
 
-var scripts = [
-    "./src/core.js",
-    "./src/privates.js",
-    "./src/array_basics.js",
-    "./src/logic.js",
-    "./src/math.js",
-    "./src/type.js",
-    "./src/accessors.js",
-    "./src/array.js",
-    "./src/grouping.js",
-    "./src/sort.js",
-    "./src/function.js",
-    "./src/object.js",
-    "./src/object_checking.js",
-    "./src/string.js"
-];
+var jestBaseConfig = require("./jest.config");
+var pkg = require("./package.json");
+
+var intro = [
+    "/**",
+    "* @overview " + pkg.name + " - " + pkg.description,
+    "* @author " + pkg.author.name + " <" + pkg.author.email + ">",
+    "* @version " + pkg.version,
+    "* @module lamb",
+    "* @license " + pkg.license,
+    "* @preserve",
+    "*/"
+].join("\n");
 
 /* build */
 
-gulp.task("concat", function () {
-    var intro = fs.readFileSync("./src/_intro.js", "utf8");
-    var outro = fs.readFileSync("./src/_outro.js", "utf8");
+gulp.task("build", function () {
+    var outro = fs.readFileSync("src/outro.js", "utf8");
 
-    return gulp.src(scripts)
-        .pipe(concat("lamb.js"), {newLine: "\n"})
-        .pipe(indent({tabs: false, amount: 4}))
-        .pipe(header(intro, {pkg: pkg}))
-        .pipe(footer(outro, {pkg: pkg}))
-        .pipe(gulp.dest("dist"));
+    return rollup.rollup({
+        input: "src/index.js",
+        plugins: [
+            filesize(),
+            rollupJSON()
+        ]
+    }).then(function (bundle) {
+        return bundle.write({
+            banner: intro,
+            exports: "default",
+            file: "dist/lamb.js",
+            format: "umd",
+            freeze: false,
+            name: "lamb",
+            footer: outro,
+            sourcemap: false,
+            strict: true
+        });
+    });
 });
 
 gulp.task("minify", gulp.series(
-    "concat",
+    "build",
     function () {
         return gulp.src("dist/lamb.js")
             .pipe(sourcemaps.init())
-            .pipe(uglify({
-                output: {comments: "some"}
-            }))
-            .pipe(rename({extname: ".min.js"}))
+            .pipe(uglify({ output: { comments: "some" } }))
+            .pipe(rename({ extname: ".min.js" }))
             .pipe(sourcemaps.write("."))
             .pipe(gulp.dest("dist"));
     }
@@ -65,54 +71,45 @@ function lintWith (settings) {
             .pipe(eslint(settings.configPath))
             .pipe(eslint.format())
             .pipe(eslint.failAfterError());
-    }
+    };
 }
 
-gulp.task("lint:code", gulp.series("concat", lintWith({
+gulp.task("lint:code", lintWith({
     configPath: ".eslintrc.json",
-    inputs: "./dist/lamb.js"
-})));
+    inputs: ["./*.js", "./src/**/*.js", "!./src/**/__{tests,mocks}__/**"]
+}));
 
 gulp.task("lint:tests", lintWith({
     configPath: ".eslintrc.test.json",
-    inputs: "./test/**"
+    inputs: "./src/**/__{tests,mocks}__/**/*.js"
 }));
 
 gulp.task("lint", gulp.series("lint:code", "lint:tests"));
 
 /* test */
 
-gulp.task("test", gulp.series("concat", function () {
-    return gulp.src("./test/spec/*.js")
-        .pipe(jasmine({
-            includeStackTrace: true
-        }));
-}));
+gulp.task("test", function () {
+    return gulp.src("./src").pipe(jest(jestBaseConfig));
+});
 
-gulp.task("test:coverage", gulp.series("concat", function (cb) {
-    gulp.src("./dist/lamb.js")
-        .pipe(istanbul())
-        .pipe(istanbul.hookRequire())
-        .on("finish", function () {
-            gulp.src("./test/spec/*.js")
-                .pipe(jasmine())
-                .pipe(istanbul.writeReports())
-                .on("end", cb);
-        });
-}));
+gulp.task("test:coverage", function () {
+    return gulp.src("./src").pipe(
+        jest(Object.assign({}, jestBaseConfig, { collectCoverage: true }))
+    );
+});
 
-gulp.task("test:verbose", gulp.series("concat", function () {
-    return gulp.src("./test/spec/*.js")
-        .pipe(jasmine({
-            includeStackTrace: true,
-            verbose: true
-        }));
-}));
+gulp.task("test:verbose", function () {
+    return gulp.src("./src").pipe(jest(Object.assign({}, jestBaseConfig, { verbose: true })));
+});
+
+gulp.task("test:watch", function () {
+    return gulp.src("./src").pipe(jest(Object.assign({}, jestBaseConfig, { watch: true })));
+});
 
 /* travis */
 
-gulp.task("travis", gulp.series("concat", "lint", "test", "minify"));
+gulp.task("travis", gulp.series("lint", "test", "minify"));
 
 /* default */
 
-gulp.task("default", gulp.series("concat", "lint", "test:coverage", "minify"));
+gulp.task("default", gulp.series("lint", "test:coverage"));
