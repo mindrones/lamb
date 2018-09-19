@@ -12,7 +12,9 @@
     "files": [
         "dist/lamb.js",
         "dist/lamb.min.js",
-        "dist/lamb.min.js.map"
+        "dist/lamb.min.js.map",
+        "src/*.js",
+        "src/**/!(__tests__)/*.js"
     ],
     "homepage": "https://ascartabelli.github.io/lamb/",
     "keywords": [
@@ -43,7 +45,7 @@
         "coveralls": "gulp test:coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
     },
     "tonicExample": "var _ = require('lamb');",
-    "version": "0.57.0-alpha.12",
+    "version": "0.57.0-alpha.13",
     "devDependencies": {
         "babel-preset-import-export": "^1.0.2",
         "coveralls": "^3.0.2",

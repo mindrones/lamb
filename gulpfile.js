@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
 
-var fs = require("fs");
 var gulp = require("gulp");
 var eslint = require("gulp-eslint");
 var filesize = require("rollup-plugin-filesize");
@@ -28,8 +27,6 @@ var intro = [
 /* build */
 
 gulp.task("build", function () {
-    var outro = fs.readFileSync("src/outro.js", "utf8");
-
     return rollup.rollup({
         input: "src/index.js",
         plugins: [
@@ -44,7 +41,6 @@ gulp.task("build", function () {
             format: "umd",
             freeze: false,
             name: "lamb",
-            footer: outro,
             sourcemap: false,
             strict: true
         });
