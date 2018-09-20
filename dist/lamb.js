@@ -1,7 +1,7 @@
 /**
 * @overview lamb - A lightweight, and docile, JavaScript library to help embracing functional programming.
 * @author Andrea Scartabelli <andrea.scartabelli@gmail.com>
-* @version 0.57.0-alpha.13
+* @version 0.57.0-alpha.15
 * @module lamb
 * @license MIT
 * @preserve
@@ -6956,7 +6956,7 @@
         isType: isType
     });
 
-    var version = "0.57.0-alpha.13";
+    var version = "0.57.0-alpha.15";
 
     var lamb = Object.create(null);
 
@@ -6992,7 +6992,9 @@
         "@@lamb/version": { value: version }
     });
 
-    Object.assign(lamb, exports$1);
+    for (var prop in exports$1) {
+        lamb[prop] = exports$1[prop];
+    }
 
     return lamb;
 

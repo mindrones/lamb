@@ -36,6 +36,8 @@ Object.defineProperties(lamb, {
     "@@lamb/version": { value: version }
 });
 
-Object.assign(lamb, exports);
+for (var prop in exports) {
+    lamb[prop] = exports[prop];
+}
 
 export default lamb;

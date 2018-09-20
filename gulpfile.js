@@ -2,7 +2,6 @@
 
 var gulp = require("gulp");
 var eslint = require("gulp-eslint");
-var filesize = require("rollup-plugin-filesize");
 var jest = require("gulp-jest").default;
 var rename = require("gulp-rename");
 var rollup = require("rollup");
@@ -29,10 +28,7 @@ var intro = [
 gulp.task("build", function () {
     return rollup.rollup({
         input: "src/index.js",
-        plugins: [
-            filesize(),
-            rollupJSON()
-        ]
+        plugins: [rollupJSON()]
     }).then(function (bundle) {
         return bundle.write({
             banner: intro,
@@ -84,27 +80,25 @@ gulp.task("lint", gulp.series("lint:code", "lint:tests"));
 
 /* test */
 
-gulp.task("test", function () {
-    return gulp.src("./src").pipe(jest(jestBaseConfig));
-});
+function testWith (extraSettings) {
+    return function () {
+        return gulp.src("./src").pipe(jest(Object.assign({}, jestBaseConfig, extraSettings)));
+    };
+}
 
-gulp.task("test:coverage", function () {
-    return gulp.src("./src").pipe(
-        jest(Object.assign({}, jestBaseConfig, { collectCoverage: true }))
-    );
-});
+gulp.task("test", testWith({}));
 
-gulp.task("test:verbose", function () {
-    return gulp.src("./src").pipe(jest(Object.assign({}, jestBaseConfig, { verbose: true })));
-});
+gulp.task("test:coverage", testWith({ collectCoverage: true }));
 
-gulp.task("test:watch", function () {
-    return gulp.src("./src").pipe(jest(Object.assign({}, jestBaseConfig, { watch: true })));
-});
+gulp.task("test:verbose", testWith({ verbose: true }));
+
+gulp.task("test:travis", testWith({ collectCoverage: true, maxWorkers: 4 }));
+
+gulp.task("test:watch", testWith({ watch: true }));
 
 /* travis */
 
-gulp.task("travis", gulp.series("lint", "test", "minify"));
+gulp.task("travis", gulp.series("lint", "test:travis"));
 
 /* default */
 
