@@ -41,6 +41,7 @@
     },
     "sideEffects": false,
     "scripts": {
+        "build": "gulp build",
         "test": "gulp test",
         "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
     },

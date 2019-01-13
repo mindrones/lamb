@@ -1,6 +1,6 @@
 import binary from "../core/binary";
 import partial from "../core/partial";
-import { _internalPlaceholder as _ } from "./_placeholder";
+import { _placeholder as _ } from "./_placeholder";
 
 /**
  * Builds a partial application of a ternary function so that its first parameter

@@ -1,4 +1,4 @@
-import _isPlaceholder from "../privates/_isPlaceholder";
+import { _hasPlaceholder, _isPlaceholder } from "../privates/_placeholder";
 
 /**
  * Builds a partially applied function. The <code>lamb</code> object itself can be
@@ -43,7 +43,9 @@ function partial (fn, args) {
 
         for (var i = 0, boundArg; i < argsLen; i++) {
             boundArg = args[i];
-            newArgs[i] = _isPlaceholder(boundArg) ? arguments[lastIdx++] : boundArg;
+            newArgs[i] = (_isPlaceholder(boundArg) || _hasPlaceholder(boundArg))
+                ? arguments[lastIdx++]
+                : boundArg;
         }
 
         for (var len = arguments.length; lastIdx < len; lastIdx++) {

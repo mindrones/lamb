@@ -32,7 +32,6 @@ gulp.task("build", function () {
     }).then(function (bundle) {
         return bundle.write({
             banner: intro,
-            exports: "default",
             file: "dist/lamb.js",
             format: "umd",
             freeze: false,

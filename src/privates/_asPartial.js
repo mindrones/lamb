@@ -1,4 +1,4 @@
-import { _getPlaceholder } from "./_placeholder";
+import { _hasPlaceholder } from "./_placeholder";
 
 /**
  * Keeps building a partial application of the received function as long
@@ -16,11 +16,10 @@ function _asPartial (fn, argsHolder) {
         var argsLen = arguments.length;
         var lastIdx = 0;
         var newArgs = [];
-        var placeholder = _getPlaceholder();
 
         for (var i = 0, len = argsHolder.length, boundArg; i < len; i++) {
             boundArg = argsHolder[i];
-            newArgs[i] = boundArg === placeholder && lastIdx < argsLen ? arguments[lastIdx++] : boundArg;
+            newArgs[i] = _hasPlaceholder(boundArg) && lastIdx < argsLen ? arguments[lastIdx++] : boundArg;
         }
 
         while (lastIdx < argsLen) {
@@ -28,13 +27,13 @@ function _asPartial (fn, argsHolder) {
         }
 
         for (i = 0; i < argsLen; i++) {
-            if (arguments[i] === placeholder) {
+            if (_hasPlaceholder(arguments[i])) {
                 return _asPartial(fn, newArgs);
             }
         }
 
         for (i = 0, len = newArgs.length; i < len; i++) {
-            if (newArgs[i] === placeholder) {
+            if (_hasPlaceholder(newArgs[i])) {
                 newArgs[i] = void 0;
             }
         }

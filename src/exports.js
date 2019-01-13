@@ -1,3 +1,6 @@
+export { version as _version } from "../package.json";
+export { _getPlaceholder, _setPlaceholder } from "./privates/_placeholder";
+
 // CORE
 
 export { default as always } from "./core/always";

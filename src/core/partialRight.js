@@ -1,4 +1,4 @@
-import { _getPlaceholder } from "../privates/_placeholder";
+import { _hasPlaceholder, _isPlaceholder } from "../privates/_placeholder";
 
 /**
  * Like {@link module:lamb.partial|partial} will build a partially applied function and
@@ -46,7 +46,9 @@ function partialRight (fn, args) {
 
         for (var i = argsLen - 1, boundArg; i > -1; i--) {
             boundArg = args[i];
-            boundArgs[i] = boundArg === _getPlaceholder() ? arguments[lastIdx--] : boundArg;
+            boundArgs[i] = (_isPlaceholder(boundArg) || _hasPlaceholder(boundArg))
+                ? arguments[lastIdx--]
+                : boundArg;
         }
 
         for (i = 0; i <= lastIdx; i++) {

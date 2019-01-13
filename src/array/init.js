@@ -1,5 +1,5 @@
 import partial from "../core/partial";
-import { _internalPlaceholder as _ } from "../privates/_placeholder";
+import { _placeholder as _ } from "../privates/_placeholder";
 import slice from "../core/slice";
 
 /**
